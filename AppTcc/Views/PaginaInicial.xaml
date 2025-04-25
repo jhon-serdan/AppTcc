@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppTcc.Views.PaginaInicial"
+             NavigationPage.HasBackButton="False"
+             Padding="0"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False">
+
+    <ScrollView>
+        <VerticalStackLayout>
+            <Border Margin="5,0,5,0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="0,0,10,10" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout>
+
+                    <Picker Title="Selecione o mês" />
+
+                    <Label HorizontalOptions="Center"
+                           Text="Saldo em conta" />
+
+                    <Label HorizontalOptions="Center"
+                           Text="R$ 50.000,00"
+                           Style="{StaticResource Padrao}"
+                           FontSize="25"/>
+
+                    <Grid ColumnDefinitions="*, *">
+                        <Label Grid.Column="0"
+                               Text="Receita"
+                               HorizontalOptions="Center"
+                               TextColor="LightSlateGray"/>
+
+                        <Label Grid.Column="1"
+                               Text="Despesa" 
+                               HorizontalOptions="Center"
+                               TextColor="LightSlateGray"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*, *">
+                        <Label Grid.Column="0"
+                               Text="R$ 50,00"
+                               HorizontalOptions="Center"
+                               TextColor="Green"
+                               FontSize="20"
+                               FontAttributes="Bold"/>
+
+                        <Label Grid.Column="1"
+                               Text="R$ 150,00" 
+                               HorizontalOptions="Center"
+                               TextColor="Red"
+                               FontSize="20"
+                               FontAttributes="Bold"/>
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Border>
+            
+            <!--Poupança-->
+            <Label Text="Saldo em Poupança"
+                   Style="{StaticResource Titulo}" />
+
+            <Border Margin="5,0,5,0"
+                    Padding="5,0,5,0">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10,10,10,10" />
+                </Border.StrokeShape>
+
+                <Label Text="R$ 150,00" />
+            </Border>
+            
+            <!--Categoria-->
+            <Label Text="Despesa por catergoria"
+                   Style="{StaticResource Titulo}" />
+
+            <Border Margin="5,0,5,0" 
+                    Padding="5,0,5,0">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10,10,10,10" />
+                </Border.StrokeShape>
+                
+                <Label Text="inserir gráficos" />
+            </Border>
+            
+            <!--Lançamento Futuro-->
+            <Label Text="Lançamentos Futuros"
+                   Style="{StaticResource Titulo}" />
+
+            <Border Margin="5,0,5,0"
+                    Padding="5,0,5,0">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10,10,10,10" />
+                </Border.StrokeShape>
+
+                <Label Text="inserir valores" />
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

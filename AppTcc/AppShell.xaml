@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="AppTcc.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:AppTcc.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Title="AppTcc"
+    Shell.TabBarBackgroundColor="LightGrey"
+    Shell.TabBarIsVisible="True">
+
+    <TabBar>
+        <Tab Title="Início" Icon="home.png">
+            <ShellContent
+                Title="Início"
+                ContentTemplate="{DataTemplate views:PaginaInicial}" />
+        </Tab>
+
+        <Tab Title="Adicionar" Icon="mais.png">
+            <ShellContent
+                Title="Início"/>
+        </Tab>
+
+        <Tab Title="Transações" Icon="transacao.png">
+            <ShellContent
+                Title="Início"
+                ContentTemplate="{DataTemplate views:Transacoes}" />
+        </Tab>
+        <!-- Adicione mais abas conforme necessário -->
+    </TabBar>
+    
+    
+</Shell>
