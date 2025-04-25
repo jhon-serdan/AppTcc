@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="AppTcc.Popups.PopupAdd">
+
+    <StackLayout
+        VerticalOptions="Center"
+        HorizontalOptions="Center"
+        Spacing="20">
+
+        <Frame
+            CornerRadius="0"
+            Padding="10"
+            BackgroundColor="White">
+            <StackLayout Spacing="20">
+
+                <Button Text="Receita" Clicked="Receita_Clicked" />
+                <Button Text="Despesa" Clicked="Despesa_Clicked" />
+                <Button Text="Transferência" Clicked="Transferencia_Clicked" />
+                <Button Text="Poupança" Clicked="Poupanca_Clicked" />
+
+            </StackLayout>
+        </Frame>
+    </StackLayout>
+</toolkit:Popup>

@@ -6,99 +6,115 @@
              Padding="0"
              Shell.NavBarIsVisible="False"
              NavigationPage.HasNavigationBar="False">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout>
+                <Border Margin="5,0,5,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="0,0,10,10" />
+                    </Border.StrokeShape>
 
-    <ScrollView>
-        <VerticalStackLayout>
-            <Border Margin="5,0,5,0">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="0,0,10,10" />
-                </Border.StrokeShape>
+                    <VerticalStackLayout>
 
-                <VerticalStackLayout>
+                        <Picker Title="Selecione o mês" />
 
-                    <Picker Title="Selecione o mês" />
+                        <Label HorizontalOptions="Center"
+                               Text="Saldo total contas" />
 
-                    <Label HorizontalOptions="Center"
-                           Text="Saldo em conta" />
+                        <Label HorizontalOptions="Center"
+                               Text="R$ 50.000,00"
+                               Style="{StaticResource Padrao}"
+                               FontSize="25"/>
 
-                    <Label HorizontalOptions="Center"
-                           Text="R$ 50.000,00"
-                           Style="{StaticResource Padrao}"
-                           FontSize="25"/>
+                        <Grid ColumnDefinitions="*, *">
+                            <Label Grid.Column="0"
+                                   Text="Receita"
+                                   HorizontalOptions="Center"
+                                   TextColor="LightSlateGray"/>
 
-                    <Grid ColumnDefinitions="*, *">
-                        <Label Grid.Column="0"
-                               Text="Receita"
-                               HorizontalOptions="Center"
-                               TextColor="LightSlateGray"/>
+                            <Label Grid.Column="1"
+                                   Text="Despesa" 
+                                   HorizontalOptions="Center"
+                                   TextColor="LightSlateGray"/>
+                        </Grid>
 
-                        <Label Grid.Column="1"
-                               Text="Despesa" 
-                               HorizontalOptions="Center"
-                               TextColor="LightSlateGray"/>
-                    </Grid>
+                        <Grid ColumnDefinitions="*, *">
+                            <Label Grid.Column="0"
+                                   Text="R$ 50,00"
+                                   HorizontalOptions="Center"
+                                   TextColor="Green"
+                                   FontSize="20"
+                                   FontAttributes="Bold"/>
 
-                    <Grid ColumnDefinitions="*, *">
-                        <Label Grid.Column="0"
-                               Text="R$ 50,00"
-                               HorizontalOptions="Center"
-                               TextColor="Green"
-                               FontSize="20"
-                               FontAttributes="Bold"/>
+                            <Label Grid.Column="1"
+                                   Text="R$ 150,00" 
+                                   HorizontalOptions="Center"
+                                   TextColor="Red"
+                                   FontSize="20"
+                                   FontAttributes="Bold"/>
+                        </Grid>
 
-                        <Label Grid.Column="1"
-                               Text="R$ 150,00" 
-                               HorizontalOptions="Center"
-                               TextColor="Red"
-                               FontSize="20"
-                               FontAttributes="Bold"/>
-                    </Grid>
-
-                </VerticalStackLayout>
-            </Border>
+                    </VerticalStackLayout>
+                </Border>
             
-            <!--Poupança-->
-            <Label Text="Saldo em Poupança"
-                   Style="{StaticResource Titulo}" />
+                <!--Poupança-->
+                <Label Text="Saldo em Poupança"
+                       Style="{StaticResource Titulo}" />
 
-            <Border Margin="5,0,5,0"
-                    Padding="5,0,5,0">
+                <Border Margin="5,0,5,0"
+                        Padding="5,0,5,0">
 
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="10,10,10,10" />
-                </Border.StrokeShape>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10,10,10,10" />
+                    </Border.StrokeShape>
 
-                <Label Text="R$ 150,00" />
-            </Border>
+                    <Label Text="R$ 150,00" />
+                </Border>
             
-            <!--Categoria-->
-            <Label Text="Despesa por catergoria"
-                   Style="{StaticResource Titulo}" />
+                <!--Categoria-->
+                <Label Text="Despesa por catergoria"
+                       Style="{StaticResource Titulo}" />
 
-            <Border Margin="5,0,5,0" 
-                    Padding="5,0,5,0">
+                <Border Margin="5,0,5,0" 
+                        Padding="5,0,5,0">
 
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="10,10,10,10" />
-                </Border.StrokeShape>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10,10,10,10" />
+                    </Border.StrokeShape>
                 
-                <Label Text="inserir gráficos" />
-            </Border>
+                    <Label Text="inserir gráficos" />
+                </Border>
             
-            <!--Lançamento Futuro-->
-            <Label Text="Lançamentos Futuros"
-                   Style="{StaticResource Titulo}" />
+                <!--Lançamento Futuro-->
+                <Label Text="Lançamentos Futuros"
+                       Style="{StaticResource Titulo}" />
 
-            <Border Margin="5,0,5,0"
-                    Padding="5,0,5,0">
+                <Border Margin="5,0,5,0"
+                        Padding="5,0,5,0">
 
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="10,10,10,10" />
-                </Border.StrokeShape>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10,10,10,10" />
+                    </Border.StrokeShape>
 
-                <Label Text="inserir valores" />
-            </Border>
+                    <Label Text="inserir valores" />
+                </Border>
 
-        </VerticalStackLayout>
-    </ScrollView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Button 
+            Text="+"
+            WidthRequest="60"
+            HeightRequest="60"
+            CornerRadius="30"
+            FontSize="30"
+            BackgroundColor="#6200EE"
+            TextColor="White"
+            Shadow="5"
+            HorizontalOptions="Center"
+            VerticalOptions="End"
+            Margin="0,0,0,10"
+            Clicked="FloatingActionButton_Clicked"/>
+        
+    </Grid>
 </ContentPage>
