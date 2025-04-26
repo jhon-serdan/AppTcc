@@ -58,7 +58,21 @@
 
                     </VerticalStackLayout>
                 </Border>
-            
+
+                <!--Carteira-->
+                <Label Text="Saldo em Carteira"
+                       Style="{StaticResource Titulo}" />
+
+                <Border Margin="5,0,5,0"
+                        Padding="5,0,5,0">
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10,10,10,10" />
+                    </Border.StrokeShape>
+
+                    <Label Text="R$ 150,00" />
+                </Border>
+
                 <!--Poupança-->
                 <Label Text="Saldo em Poupança"
                        Style="{StaticResource Titulo}" />
@@ -116,6 +130,6 @@
             VerticalOptions="End"
             Margin="0,0,0,10"
             Clicked="FloatingActionButton_Clicked"/>
-        
+
     </Grid>
 </ContentPage>

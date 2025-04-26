@@ -32,15 +32,29 @@
                     Style="{StaticResource DefaultStyleDtpck}"/>
 
         <Label 
-            Text="Categoria"
+            Text="De:"
             Style="{StaticResource TituloItens}"/>
 
-        <Picker x:Name="PckCategoriaTransferencia"
-                Style="{StaticResource DefaultStylePck}"
-                SelectedIndex="0">
+        <Picker x:Name="PckDeTransferencia"
+                Style="{StaticResource DefaultStylePck}">
 
             <Picker.Items>
-                <x:String>-- Selecione --</x:String>
+                <x:String> Carteira </x:String>
+                <x:String> Poupança </x:String>
+            </Picker.Items>
+
+        </Picker>
+
+        <Label 
+            Text="Para:"
+            Style="{StaticResource TituloItens}"/>
+
+        <Picker x:Name="PckParaTransferencia"
+                Style="{StaticResource DefaultStylePck}">
+
+            <Picker.Items>
+                <x:String> Carteira </x:String>
+                <x:String> Poupança </x:String>
             </Picker.Items>
 
         </Picker>
