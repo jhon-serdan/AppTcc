@@ -2,8 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppTcc.Views.PaginaInicial"
-             NavigationPage.HasBackButton="False"
-             Padding="0"
+             NavigationPage.HasBackButton="True"
              Shell.NavBarIsVisible="False"
              NavigationPage.HasNavigationBar="False">
     <Grid>
@@ -16,7 +15,10 @@
 
                     <VerticalStackLayout>
 
-                        <Picker Title="Selecione o mês" />
+                        <DatePicker x:Name="DatePickerPagInicial"
+                                    Format="MM/yyyy"
+                                    HorizontalOptions="Center"
+                                    FontSize="18"/>
 
                         <Label HorizontalOptions="Center"
                                Text="Saldo total contas" />
@@ -110,7 +112,6 @@
             FontSize="30"
             BackgroundColor="#6200EE"
             TextColor="White"
-            Shadow="5"
             HorizontalOptions="Center"
             VerticalOptions="End"
             Margin="0,0,0,10"

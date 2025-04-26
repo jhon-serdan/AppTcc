@@ -1,4 +1,6 @@
+using AppTcc.Views;
 using CommunityToolkit.Maui.Views;
+using System.Threading.Tasks;
 
 namespace AppTcc.Popups
 {
@@ -9,23 +11,27 @@ namespace AppTcc.Popups
             InitializeComponent();
         }
 
-        private void Receita_Clicked(object sender, EventArgs e)
+        private async void Btn_AddReceita_Clicked(object sender, EventArgs e)
         {
-            Close(); // Aqui você pode chamar a página de cadastro de receita
-        }
-
-        private void Despesa_Clicked(object sender, EventArgs e)
-        {
-            Close(); // Aqui você pode chamar a página de cadastro de despesa
-        }
-
-        private void Transferencia_Clicked(object sender, EventArgs e)
-        {
+            await Shell.Current.GoToAsync(nameof(PaginaAddReceita));
             Close();
         }
 
-        private void Poupanca_Clicked(object sender, EventArgs e)
+        private async void Btn_AddDespesa_Clicked(object sender, EventArgs e)
         {
+            await Shell.Current.GoToAsync(nameof(PaginaAddDespesa));
+            Close();
+        }
+
+        private async void Btn_AddTransferencia_Clicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync(nameof(PaginaAddTransferencia));
+            Close();
+        }
+
+        private async void Btn_AddPoupanca_Clicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync(nameof(PaginaAddPoupança));
             Close();
         }
     }

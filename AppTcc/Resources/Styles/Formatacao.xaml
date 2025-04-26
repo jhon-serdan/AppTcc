@@ -15,4 +15,51 @@
 
     </Style>
 
+    <Style x:Key="TituloPagina" TargetType="Label">
+        <Setter Property="FontSize" Value="25" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Padding" Value="40,10,0,10" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+        <Setter Property="FontFamily" Value="LatoBolt" />
+
+    </Style>
+
+    <Style x:Key="TituloItens" TargetType="Label">
+        <Setter Property="FontFamily" Value="LatoLight" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Padding" Value="5,0,0,5" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+
+    </Style>
+
+    <Style x:Key="DefaultStyleLabel" TargetType="Label">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Padding" Value="40,10,0,10" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+
+    </Style>
+
+    <Style x:Key="DefaultStyleDtpck" TargetType="DatePicker">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Margin" Value="5,0,5,0" />
+        <Setter Property="Format" Value="dd/MM/yyyy" />
+
+    </Style>
+
+    <Style x:Key="DefaultStylePck" TargetType="Picker">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Margin" Value="5,0,5,0" />
+
+    </Style>
+
+    <Style x:Key="DefaultStyleEntry" TargetType="Entry">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Margin" Value="5,0,5,0" />
+        <Setter Property="Placeholder" Value="Valor" />
+        <Setter Property="Keyboard" Value="Numeric" />
+
+    </Style>
+
 </ResourceDictionary>

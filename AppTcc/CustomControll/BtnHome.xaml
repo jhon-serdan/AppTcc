@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppTcc.CustomControll.BtnHome">
+    
+    <Grid ColumnDefinitions="*,*">
+        
+        <Button Text="Cancelar"
+                Grid.Column="0"
+                Margin="5,5,2.5,5"
+                Clicked="Btn_Cancelar"/>
+        
+        <Button Text="Avançar"
+                Grid.Column="1"
+                Margin="2.5,5,5,5"
+                Clicked="Btn_Avancar"/>
+        
+    </Grid>
+    
+</ContentView>

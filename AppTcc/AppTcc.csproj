@@ -72,6 +72,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="CustomControll\BtnHome.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Popups\PopupAdd.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

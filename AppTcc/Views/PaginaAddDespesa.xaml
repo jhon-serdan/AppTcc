@@ -1,12 +1,51 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
+
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:control="clr-namespace:AppTcc.CustomControll"
              x:Class="AppTcc.Views.PaginaAddDespesa"
-             Title="PaginaAddDespesa">
+             Title="PaginaAddDespesa"
+             NavigationPage.HasBackButton="False"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False"
+             Shell.TabBarIsVisible="False">
+
+
     <VerticalStackLayout>
+
         <Label 
-            Text="Despesa!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            Text="Nova Despesa"
+            Style="{StaticResource TituloPagina}"/>
+
+        <Label Text="Valor Despesa" 
+               Style="{StaticResource TituloItens}"/>
+
+        <Entry x:Name="EntryValorDespesa"
+               Style="{StaticResource DefaultStyleEntry}" />
+
+        <Label 
+            Text="Data"
+            Style="{StaticResource TituloItens}"/>
+
+        <DatePicker x:Name="DtpckDespesa"
+                    Style="{StaticResource DefaultStyleDtpck}"/>
+
+        <Label 
+            Text="Categoria"
+            Style="{StaticResource TituloItens}"/>
+
+        <Picker x:Name="PckCategoriaDespesa"
+                Style="{StaticResource DefaultStylePck}"
+                SelectedIndex="0">
+
+            <Picker.Items>
+                <x:String>-- Selecione --</x:String>
+            </Picker.Items>
+
+        </Picker>
+
+        <control:BtnHome x:Name="BtnHomeDespesa" />
+
     </VerticalStackLayout>
 </ContentPage>
