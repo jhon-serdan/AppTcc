@@ -22,7 +22,7 @@
                Style="{StaticResource TituloItens}"/>
 
         <Entry x:Name="EntryValorReceita"
-               Style="{StaticResource DefaultStyleEntry}" />
+               Style="{StaticResource DefaultStyleEntryNmrc}" />
 
         <Label 
             Text="Data"

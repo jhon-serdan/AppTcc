@@ -38,6 +38,7 @@
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="Padding" Value="40,10,0,10" />
         <Setter Property="HorizontalOptions" Value="Start" />
+        <Setter Property="FontFamily" Value="Lato" />
 
     </Style>
 
@@ -45,20 +46,30 @@
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Margin" Value="5,0,5,0" />
         <Setter Property="Format" Value="dd/MM/yyyy" />
+        <Setter Property="FontFamily" Value="Lato" />
 
     </Style>
 
     <Style x:Key="DefaultStylePck" TargetType="Picker">
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Margin" Value="5,0,5,0" />
+        <Setter Property="FontFamily" Value="Lato" />
 
     </Style>
 
-    <Style x:Key="DefaultStyleEntry" TargetType="Entry">
+    <Style x:Key="DefaultStyleEntryNmrc" TargetType="Entry">
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Margin" Value="5,0,5,0" />
         <Setter Property="Placeholder" Value="Valor" />
         <Setter Property="Keyboard" Value="Numeric" />
+        <Setter Property="FontFamily" Value="Lato" />
+
+    </Style>
+
+    <Style x:Key="DefaultStyleRadioButton" TargetType="RadioButton">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontFamily" Value="Lato" />
+
 
     </Style>
 

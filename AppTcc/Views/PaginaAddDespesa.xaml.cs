@@ -13,4 +13,18 @@ public partial class PaginaAddDespesa : ContentPage
     {
         await Shell.Current.GoToAsync("PaginaInicial");
     }
+
+    private void FormaPagamento_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        if (sender == RbParcelado && e.Value)
+        {
+            CampoParcelas.IsVisible = true;
+        }
+        else if (sender == RbVista && e.Value)
+        {
+            CampoParcelas.IsVisible = false;
+
+            EntryParcelas.Text = string.Empty;
+        }
+    }
 }
