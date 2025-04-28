@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui;
+﻿using AppTcc.Helper;
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 
 namespace AppTcc
@@ -25,6 +26,10 @@ namespace AppTcc
                     fonts.AddFont("Lato-Regular.ttf", "LatoRegular");
                     fonts.AddFont("Lato-Thin.ttf", "LatoThin");
                 });
+
+            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "transacoes.db3");
+
+            builder.Services.AddSingleton<SQLiteDatabaseHelper>(s => new SQLiteDatabaseHelper(dbPath));
 
 #if DEBUG
     		builder.Logging.AddDebug();
