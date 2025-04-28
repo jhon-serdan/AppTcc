@@ -4,13 +4,14 @@ public partial class BtnHome : ContentView
 {
     // Torne o evento público!
     public event EventHandler CancelarClicked;
+    public event EventHandler AvancarClicked;
 
     public BtnHome()
     {
         InitializeComponent();
     }
 
-    private async void Btn_Cancelar(object sender, EventArgs e)
+    public async void Btn_Cancelar(object sender, EventArgs e)
     {
         var confirmar = await Application.Current.MainPage.DisplayAlert("Cancelar", "Deseja realmente cancelar?", "Sim", "Não");
         if (confirmar)
@@ -19,8 +20,8 @@ public partial class BtnHome : ContentView
         }
     }
 
-    private void Btn_Avancar(object sender, EventArgs e)
+    public void Btn_Avancar(object sender, EventArgs e)
     {
-        // lógica futura
+        AvancarClicked?.Invoke(this, EventArgs.Empty);
     }
 }
