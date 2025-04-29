@@ -10,9 +10,9 @@
             HorizontalOptions="Center" />
 
         <Button Text="Zerar banco transações"
-                Clicked="Button_Clicked"
-               
-        
+                Clicked="Btn_LimparTransacao" />
+
+
     </VerticalStackLayout>
     
 </ContentPage>

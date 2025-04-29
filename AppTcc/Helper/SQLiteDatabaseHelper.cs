@@ -157,6 +157,17 @@ namespace AppTcc.Helper
 
         #region Zerar banco transações
 
+        public async Task LimparTabelaTransacoes()
+        {
+            var db = App.DB;
+
+            var transacoes = await db.ListarTransacaoAsync();
+
+            foreach (var transacao in transacoes)
+            {
+                await db.DeletarTransacao(transacao);
+            }
+        }
 
 
         #endregion
