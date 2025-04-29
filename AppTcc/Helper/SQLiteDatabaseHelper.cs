@@ -92,7 +92,7 @@ namespace AppTcc.Helper
 
         #endregion
 
-        #region Salvar Transacao
+        #region Salvar Transacao a Vista
 
         public Task<int> SalvarTransacoesAsync (Transacao transacao)
         {

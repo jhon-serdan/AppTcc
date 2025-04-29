@@ -12,9 +12,34 @@ public partial class PaginaAddDespesa : ContentPage
 	{
 		InitializeComponent();
 
-        _conn = MauiProgram.Services.GetService<SQLiteDatabaseHelper>();
+        _conn = MauiProgram.CreateMauiApp().Services.GetServices<SQLiteDatabaseHelper>();
+
         BtnHomeDespesa.CancelarClicked += BtnHome_CancelarClicked;
         BtnHomeDespesa.AvancarClicked += BtnHome_AvancarClicked;
+
+        CarregarCategorias();
+    }
+
+    private async void CarregarCategorias()
+    {
+        try
+        {
+            _categorias = await _conn.ListaCategoria(TipoCategoria.Despesa);
+
+            PckCategoriaDespesa.Items.Clear();
+            PckCategoriaDespesa.Items.Add("-- Selecione --");
+
+            foreach (var categoria in _categorias)
+            {
+                PckCategoriaDespesa.Items.Add(categoria.Nome);
+            }
+
+            PckCategoriaDespesa.SelectedIndex = 0;
+        } 
+        catch (Exception ex)
+        {
+            await DisplayAlert("Atenção", $"Erro ao carregar categorias: {ex.Message}", "OK");
+        }
     }
 
     private async void BtnHome_CancelarClicked(object sender, EventArgs e)
@@ -22,6 +47,7 @@ public partial class PaginaAddDespesa : ContentPage
         await Shell.Current.GoToAsync("PaginaInicial");
     }
 
+    #region Abilitar campo de parcelamento
     private void FormaPagamento_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         if (sender == RbParcelado && e.Value)
@@ -35,52 +61,94 @@ public partial class PaginaAddDespesa : ContentPage
             EntryParcelas.Text = string.Empty;
         }
     }
+    #endregion
 
-    private async void BtnHome_AvancarClicked (object sender, EventArgs e)
+    #region Validação dos campos
+    private bool ValidarFormularioDespesa ()
     {
+        #region Validação Valor
+
         if (string.IsNullOrEmpty(EntryValorDespesa.Text))
         {
-            await DisplayAlert("Atenção", "Informe o valor", "OK");
-            return;
+            DisplayAlert("Erro", "Insira um valor válido", "OK");
+            return false;
         }
 
-        if (Convert.ToDouble(EntryValorDespesa.Text) < 0)
+        if (!decimal.TryParse(EntryValorDespesa.Text, out decimal valor) || valor <= 0)
         {
-            await DisplayAlert("Atenção", "Informe valor maior que 0", "OK");
-            return;
+            DisplayAlert("Erro", "Informe um valor válido", "OK");
+            return false;
         }
+        #endregion
 
-        if (PckCategoriaDespesa.SelectedIndex <= 0)
+        #region Validação Categoria
+
+        if (PckCategoriaDespesa.SelectedIndex <= 0 || PckCategoriaDespesa.SelectedIndex == 0)
         {
-            await DisplayAlert("Atenção", "Selecione uma categoria", "OK");
-            return;
+            DisplayAlert("Erro", "Informe uma categoria", "OK");
+            return false;
         }
 
-        bool eParcelado = RbParcelado.IsChecked;
-        int? numeroParcelas = null;
+        #endregion
 
-        if (eParcelado)
+        #region Validação Parcelas
+
+        if (RbParcelado.IsChecked)
         {
             if (string.IsNullOrEmpty(EntryParcelas.Text))
             {
-                await DisplayAlert("Atenção", "Informe o número de Parcelas", "OK");
-                return;
-            }
-
+                DisplayAlert("Erro", "Insira as parcelas", "OK");
+                return false;
+            } 
 
             if (!int.TryParse(EntryParcelas.Text, out int parcelas) || parcelas <= 1)
             {
-                await DisplayAlert("Atenção", "Número de Parcelas deve ser maior que 1", "OK");
-                return;
+                DisplayAlert("Erro", "Número de Parcelas inválido", "OK");
+                return false;
+            }
+        }
+
+        return true;
+
+        #endregion
+    }
+    #endregion
+    private async void BtnHome_AvancarClicked (object sender, EventArgs e)
+    {
+        if (!ValidarFormularioDespesa())
+            return;
+
+        try
+        {
+            var categoriaSeleciona = _categorias[categoriaSeleciona - 1];
+
+            var transacao = new Transacao
+            {
+                Valor = Convert.ToDecimal(EntryValorDespesa.Text),
+                Data = DtpckDespesa.Date,
+                CategoriaId = categoriaSeleciona.Id,
+                Tipo = TipoTransacao.Despesa,
+                Descricao = DescricaoDespesa.text,
+                EParcelado = RbParcelado.IsChecked,
+                Conta = "Carteira"
+            };
+
+            if (RbParcelado.IsChecked || !string.IsNullOrEmpty(EntryParcelas.Text))
+            {
+                transacao.NumeroParcelas = Convert.ToInt32(EntryParcelas.Text);
+                await SQLiteDatabaseHelper.SalvarTransacaoParcelada(transacao);
+            }
+            else
+            {
+                await SQLiteDatabaseHelper.SalvarTransacoesAsync.(transacao);
             }
 
-            numeroParcelas = parcelas;
-        }
+            await DisplayAlert("Sucesso", "Transação salva com sucesso!", "OK");
+            await Shell.Current.GoToAsync("//PaginaInicial");
 
-        var transacao = new Transacao();
+        }catch (Exception ex)
         {
-            Valor = EntryValorDespesa
+            await DisplayAlert("Atenção", $"Ocorreu um erro em: {ex.Message}", "OK");
         }
-
     }
 }

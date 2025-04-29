@@ -48,6 +48,14 @@
         <Label Text="Forma de pagamento"
                Style="{StaticResource TituloItens}" />
 
+        <Label Text="Descrição"
+               Style="{StaticResource TituloItens}" />
+
+        <Entry x:Name="DescricaoDespesa"
+               Placeholder="Infore a descrição"
+               Style="{StaticResource DefaultStyleEntryNmrc}" />
+
+
         <HorizontalStackLayout>
 
             <RadioButton x:Name="RbVista"
