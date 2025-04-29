@@ -115,8 +115,17 @@
                     <Label Text="inserir valores" />
                 </Border>
 
+                <Button x:Name="ExportarBanco"
+                Text="Exportar banco"
+                Clicked="ExportarBanco_Clicked"/>
+
             </VerticalStackLayout>
+            
+            
         </ScrollView>
+
+
+
 
         <Button 
             Text="+"

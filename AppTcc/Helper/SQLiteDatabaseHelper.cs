@@ -155,6 +155,12 @@ namespace AppTcc.Helper
 
         #endregion
 
+        #region Zerar banco transações
+
+
+
+        #endregion
+
         #endregion
 
     }
