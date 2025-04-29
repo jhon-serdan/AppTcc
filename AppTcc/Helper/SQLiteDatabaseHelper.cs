@@ -13,45 +13,39 @@ namespace AppTcc.Helper
 
         #region Conexão_SQLite e criação Tabelas
         public SQLiteDatabaseHelper(string dbPath)
-            {
-                _conn = new SQLiteAsyncConnection(dbPath); ;
-            }
-        public async Task InitializeDatabase()
         {
-            if (_conn != null)
+            _conn = new SQLiteAsyncConnection(dbPath);
+            _conn.CreateTableAsync<Categoria>().Wait();
+            _conn.CreateTableAsync<Transacao>().Wait();
+            
+            var categorias = _conn.Table<Categoria>().ToListAsync().Result;
+            if (categorias.Count == 0)
             {
-                await _conn.CreateTableAsync<Categoria>();
-                await _conn.CreateTableAsync<Transacao>();
-
-                var catergoria = await _conn.Table<Categoria>().ToListAsync(); ;
-                if (catergoria.Count == 0)
-                {
-                    await InserirCatergoriasPadraoAsync();
-                }
-            }            
+                InserirCatergoriasPadraoAsync();
+            }
         }
         #endregion
 
         #region CRUD
 
         #region Criação das Categorias Padrao
-        private async Task InserirCatergoriasPadraoAsync()
+        private void InserirCatergoriasPadraoAsync()
         {
             #region Categoria de Receita
-            await _conn.InsertAsync(new Categoria { Nome = "Salário", Tipo = TipoCategoria.Receita });
-            await _conn.InsertAsync(new Categoria { Nome = "Prêmio", Tipo = TipoCategoria.Receita });
+            _conn.InsertAsync(new Categoria { Nome = "Salário", Tipo = TipoCategoria.Receita });
+            _conn.InsertAsync(new Categoria { Nome = "Prêmio", Tipo = TipoCategoria.Receita });
             #endregion
 
             #region Categoria de Despesa
-            await _conn.InsertAsync(new Categoria { Nome = "Alimentação", Tipo = TipoCategoria.Despesa });
-            await _conn.InsertAsync(new Categoria { Nome = "Lazer", Tipo = TipoCategoria.Despesa });
-            await _conn.InsertAsync(new Categoria { Nome = "Assinatura", Tipo = TipoCategoria.Despesa });
+            _conn.InsertAsync(new Categoria { Nome = "Alimentação", Tipo = TipoCategoria.Despesa });
+            _conn.InsertAsync(new Categoria { Nome = "Lazer", Tipo = TipoCategoria.Despesa });
+            _conn.InsertAsync(new Categoria { Nome = "Assinatura", Tipo = TipoCategoria.Despesa });
             #endregion
 
             #region Categoria de Ambos
-            await _conn.InsertAsync(new Categoria { Nome = "Empréstimo", Tipo = TipoCategoria.Ambos });
-            await _conn.InsertAsync(new Categoria { Nome = "Investimento", Tipo = TipoCategoria.Ambos });
-            await _conn.InsertAsync(new Categoria { Nome = "Outros", Tipo = TipoCategoria.Ambos });
+            _conn.InsertAsync(new Categoria { Nome = "Empréstimo", Tipo = TipoCategoria.Ambos });
+            _conn.InsertAsync(new Categoria { Nome = "Investimento", Tipo = TipoCategoria.Ambos });
+            _conn.InsertAsync(new Categoria { Nome = "Outros", Tipo = TipoCategoria.Ambos });
             #endregion
         }
         #endregion
@@ -99,7 +93,8 @@ namespace AppTcc.Helper
             if (transacao.Id != 0)
             {
                 return _conn.UpdateAsync(transacao);
-            } else
+            } 
+            else
             {
                 return _conn.InsertAsync(transacao);
             }

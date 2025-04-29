@@ -6,44 +6,28 @@ namespace AppTcc.Views;
 public partial class PaginaAddDespesa : ContentPage
 {
 
-    private SQLiteDatabaseHelper _conn;
     private List<Categoria> _categorias;
 
 	public PaginaAddDespesa()
 	{
 		InitializeComponent();
 
-        _conn = IPlatformApplication.Current.Services.GetServices<SQLiteDatabaseHelper>();
-
-
         BtnHomeDespesa.CancelarClicked += BtnHome_CancelarClicked;
         BtnHomeDespesa.AvancarClicked += BtnHome_AvancarClicked;
 
         DtpckDespesa.Date = DateTime.Now;
 
+        CarregarCategorias();
+
     }
-
-    protected override async void OnAppering()
-    {
-        base.OnAppearing();
-
-        await CarregarCategorias();
-    }
-
-
 
     #region Carrega as categorias de despesa
-    private async Task CarregarCategorias()
+    private async void CarregarCategorias()
     {
         try
         {
-            if (_conn == null)
-            {
-                await DisplayAlert("Erro", "Banco de dados não inicializado", "Ok");
-                return;
-            }
-
-            _categorias = await _conn.ListaCategoria(TipoCategoria.Despesa);
+            
+            _categorias = await App.DB.ListaCategoria(TipoCategoria.Despesa);
 
             PckCategoriaDespesa.Items.Clear();
             PckCategoriaDespesa.Items.Add("-- Selecione --");
@@ -149,12 +133,6 @@ public partial class PaginaAddDespesa : ContentPage
         try
         {
 
-            if(_conn == null)
-            {
-                await DisplayAlert("Erro", "Banco de dados não inicializado", "OK");
-                return;
-            }
-
             int categoriaIndex = PckCategoriaDespesa.SelectedIndex;
             var categoriaSelecionada = _categorias[categoriaIndex - 1];
 
@@ -172,15 +150,15 @@ public partial class PaginaAddDespesa : ContentPage
             if (RbParcelado.IsChecked && !string.IsNullOrEmpty(EntryParcelas.Text))
             {
                 transacao.NumeroParcelas = Convert.ToInt32(EntryParcelas.Text);
-                await _conn.SalvarTransacaoParcelada(transacao);
+                await App.DB.SalvarTransacaoParcelada(transacao);
             }
             else
             {
-                await _conn.SalvarTransacoesAsync(transacao);
+                await App.DB.SalvarTransacoesAsync(transacao);
             }
 
             await DisplayAlert("Sucesso", "Transação salva com sucesso!", "OK");
-            await Shell.Current.GoToAsync("//PaginaInicial");
+            await Shell.Current.GoToAsync("..");
 
         }catch (Exception ex)
         {
