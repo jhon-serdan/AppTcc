@@ -1,4 +1,5 @@
 using AppTcc.Helper;
+using CommunityToolkit.Maui.Views;
 
 namespace AppTcc.Views;
 
@@ -12,14 +13,20 @@ public partial class PaginaAddDespesa : ContentPage
 	{
 		InitializeComponent();
 
-        _conn = MauiProgram.CreateMauiApp().Services.GetServices<SQLiteDatabaseHelper>();
+        string dbPath = Path.Combine(FileSystem.AppDataDirectory, "transacoes.db3");
+        _conn = new SQLiteDatabaseHelper(dbPath);
+
 
         BtnHomeDespesa.CancelarClicked += BtnHome_CancelarClicked;
         BtnHomeDespesa.AvancarClicked += BtnHome_AvancarClicked;
 
         CarregarCategorias();
+
+        DtpckDespesa.Date = DateTime.Now;
+
     }
 
+    #region Carrega as categorias de despesa
     private async void CarregarCategorias()
     {
         try
@@ -42,22 +49,30 @@ public partial class PaginaAddDespesa : ContentPage
         }
     }
 
+    #endregion
+
+    #region Logica botão cancelar
     private async void BtnHome_CancelarClicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("PaginaInicial");
     }
+
+    #endregion
 
     #region Abilitar campo de parcelamento
     private void FormaPagamento_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         if (sender == RbParcelado && e.Value)
         {
+            //se o botão de parcelado for selecionado, mostra o campo de parcelas
             CampoParcelas.IsVisible = true;
         }
         else if (sender == RbVista && e.Value)
         {
+            //se o botão a vista for seleciona, esconde o campo de parcelas
             CampoParcelas.IsVisible = false;
 
+            //apaga a quantidade de parcelas ao esconder o campo de parcelas
             EntryParcelas.Text = string.Empty;
         }
     }
@@ -113,6 +128,8 @@ public partial class PaginaAddDespesa : ContentPage
         #endregion
     }
     #endregion
+
+    #region Logica botão avançar
     private async void BtnHome_AvancarClicked (object sender, EventArgs e)
     {
         if (!ValidarFormularioDespesa())
@@ -120,27 +137,29 @@ public partial class PaginaAddDespesa : ContentPage
 
         try
         {
-            var categoriaSeleciona = _categorias[categoriaSeleciona - 1];
+
+            int categoriaIndex = PckCategoriaDespesa.SelectedIndex;
+            var categoriaSelecionada = _categorias[categoriaIndex - 1];
 
             var transacao = new Transacao
             {
                 Valor = Convert.ToDecimal(EntryValorDespesa.Text),
                 Data = DtpckDespesa.Date,
-                CategoriaId = categoriaSeleciona.Id,
+                CategoriaId = categoriaSelecionada.Id,
                 Tipo = TipoTransacao.Despesa,
-                Descricao = DescricaoDespesa.text,
+                Descricao = DescricaoDespesa.Text,
                 EParcelado = RbParcelado.IsChecked,
                 Conta = "Carteira"
             };
 
-            if (RbParcelado.IsChecked || !string.IsNullOrEmpty(EntryParcelas.Text))
+            if (RbParcelado.IsChecked && !string.IsNullOrEmpty(EntryParcelas.Text))
             {
                 transacao.NumeroParcelas = Convert.ToInt32(EntryParcelas.Text);
-                await SQLiteDatabaseHelper.SalvarTransacaoParcelada(transacao);
+                await _conn.SalvarTransacaoParcelada(transacao);
             }
             else
             {
-                await SQLiteDatabaseHelper.SalvarTransacoesAsync.(transacao);
+                await _conn.SalvarTransacoesAsync(transacao);
             }
 
             await DisplayAlert("Sucesso", "Transação salva com sucesso!", "OK");
@@ -151,4 +170,5 @@ public partial class PaginaAddDespesa : ContentPage
             await DisplayAlert("Atenção", $"Ocorreu um erro em: {ex.Message}", "OK");
         }
     }
+    #endregion
 }

@@ -13,11 +13,7 @@ public partial class BtnHome : ContentView
 
     public async void Btn_Cancelar(object sender, EventArgs e)
     {
-        var confirmar = await Application.Current.MainPage.DisplayAlert("Cancelar", "Deseja realmente cancelar?", "Sim", "Não");
-        if (confirmar)
-        {
-            CancelarClicked?.Invoke(this, EventArgs.Empty);
-        }
+        CancelarClicked?.Invoke(this, EventArgs.Empty);
     }
 
     public void Btn_Avancar(object sender, EventArgs e)

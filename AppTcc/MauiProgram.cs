@@ -29,6 +29,10 @@ namespace AppTcc
 
             string dbPath = Path.Combine(FileSystem.AppDataDirectory, "transacoes.db3");
 
+            var dbHelper = new SQLiteDatabaseHelper(dbPath);
+
+            dbHelper.InitializeDatabase().Wait();
+
             builder.Services.AddSingleton<SQLiteDatabaseHelper>(s => new SQLiteDatabaseHelper(dbPath));
 
 #if DEBUG
