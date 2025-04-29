@@ -53,7 +53,7 @@
 
         <Entry x:Name="DescricaoDespesa"
                Placeholder="Infore a descrição"
-               Style="{StaticResource DefaultStyleEntryNmrc}" />
+               Style="{StaticResource DefaultStyleEntryAbcd}" />
 
 
         <HorizontalStackLayout>

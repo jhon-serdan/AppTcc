@@ -66,6 +66,14 @@
 
     </Style>
 
+    <Style x:Key="DefaultStyleEntryAbcd" TargetType="Entry">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Margin" Value="5,0,5,0" />
+        <Setter Property="Placeholder" Value="Valor" />
+        <Setter Property="FontFamily" Value="Lato" />
+
+    </Style>
+
     <Style x:Key="DefaultStyleRadioButton" TargetType="RadioButton">
         <Setter Property="FontSize" Value="20" />
         <Setter Property="FontFamily" Value="Lato" />
