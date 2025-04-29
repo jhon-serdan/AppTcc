@@ -13,24 +13,36 @@ public partial class PaginaAddDespesa : ContentPage
 	{
 		InitializeComponent();
 
-        string dbPath = Path.Combine(FileSystem.AppDataDirectory, "transacoes.db3");
-        _conn = new SQLiteDatabaseHelper(dbPath);
+        _conn = IPlatformApplication.Current.Services.GetServices<SQLiteDatabaseHelper>();
 
 
         BtnHomeDespesa.CancelarClicked += BtnHome_CancelarClicked;
         BtnHomeDespesa.AvancarClicked += BtnHome_AvancarClicked;
 
-        CarregarCategorias();
-
         DtpckDespesa.Date = DateTime.Now;
 
     }
 
+    protected override async void OnAppering()
+    {
+        base.OnAppearing();
+
+        await CarregarCategorias();
+    }
+
+
+
     #region Carrega as categorias de despesa
-    private async void CarregarCategorias()
+    private async Task CarregarCategorias()
     {
         try
         {
+            if (_conn == null)
+            {
+                await DisplayAlert("Erro", "Banco de dados não inicializado", "Ok");
+                return;
+            }
+
             _categorias = await _conn.ListaCategoria(TipoCategoria.Despesa);
 
             PckCategoriaDespesa.Items.Clear();
@@ -42,10 +54,9 @@ public partial class PaginaAddDespesa : ContentPage
             }
 
             PckCategoriaDespesa.SelectedIndex = 0;
-        } 
-        catch (Exception ex)
+        } catch (Exception ex)
         {
-            await DisplayAlert("Atenção", $"Erro ao carregar categorias: {ex.Message}", "OK");
+            await DisplayAlert("Erro", $"Erro ao carregar categorias {ex.Message}", "OK");
         }
     }
 
@@ -137,6 +148,12 @@ public partial class PaginaAddDespesa : ContentPage
 
         try
         {
+
+            if(_conn == null)
+            {
+                await DisplayAlert("Erro", "Banco de dados não inicializado", "OK");
+                return;
+            }
 
             int categoriaIndex = PckCategoriaDespesa.SelectedIndex;
             var categoriaSelecionada = _categorias[categoriaIndex - 1];

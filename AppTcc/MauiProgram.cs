@@ -31,8 +31,6 @@ namespace AppTcc
 
             var dbHelper = new SQLiteDatabaseHelper(dbPath);
 
-            dbHelper.InitializeDatabase().Wait();
-
             builder.Services.AddSingleton<SQLiteDatabaseHelper>(s => dbHelper);
 
 #if DEBUG
