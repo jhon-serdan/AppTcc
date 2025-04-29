@@ -33,7 +33,7 @@ namespace AppTcc
 
             dbHelper.InitializeDatabase().Wait();
 
-            builder.Services.AddSingleton<SQLiteDatabaseHelper>(s => new SQLiteDatabaseHelper(dbPath));
+            builder.Services.AddSingleton<SQLiteDatabaseHelper>(s => dbHelper);
 
 #if DEBUG
     		builder.Logging.AddDebug();
