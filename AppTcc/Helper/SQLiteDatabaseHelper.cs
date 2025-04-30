@@ -67,21 +67,40 @@ namespace AppTcc.Helper
 
         #region Listar Todas Transacoes
 
-        public Task<List<Transacao>> ListarTransacaoAsync ()
+        public async Task<List<Transacao>> ListarTransacaoAsync()
         {
-                return _conn.Table<Transacao>().OrderByDescending(t => t.Data).ToListAsync();
+            var transacoes = await _conn.Table<Transacao>().OrderByDescending(t => t.Data).ToListAsync();
+            var categorias = await _conn.Table<Categoria>().ToListAsync();
+
+            foreach (var transacao in transacoes)
+            {
+                var categoria = categorias.FirstOrDefault(c => c.Id == transacao.CategoriaId);
+                transacao.CategoriaNome = categoria?.Nome ?? "Categoria não encontrada";
+            }
+
+            return transacoes;
+
         }
 
         #endregion
 
         #region Listar Transação Por Mes
 
-        public Task<List<Transacao>> ListarTransacaoMes (int mes, int ano)
+        public async Task<List<Transacao>> ListarTransacaoMes (int mes, int ano)
         {
-            return _conn.Table<Transacao>()
+            var transacoes = await _conn.Table<Transacao>()
                 .Where(t => t.Data.Month == mes && t.Data.Year == ano)
                 .OrderByDescending(t => t.Data)
                 .ToListAsync();
+
+            var categorias = await _conn.Table<Categoria>().ToListAsync();
+
+            foreach (var transacao in transacoes)
+            {
+                var categoria = categorias.FirstOrDefault(c => c.Id == transacao.CategoriaId);
+                transacao.CategoriaNome = categoria?.Nome ?? "Categoria não encontrada;";
+            }
+            return transacoes;
         }
 
         #endregion

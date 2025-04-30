@@ -14,6 +14,8 @@ namespace AppTcc.Helper
         public decimal Valor { get; set; }
         public DateTime Data { get; set; }
         public int CategoriaId { get; set; }
+        [Ignore]
+        public string CategoriaNome { get; set; }
         public TipoTransacao Tipo { get; set; }
         public string Descricao { get; set; }
         public bool EParcelado { get; set; }

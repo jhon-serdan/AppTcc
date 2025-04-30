@@ -12,8 +12,7 @@
 
         <CollectionView x:Name="lst_Transacoes"
                         ItemsSource="{Binding lista}"
-                        Margin="10,5,10,0"
-                        >
+                        Margin="10,5,10,0">
 
             <CollectionView.ItemTemplate>
 
@@ -23,7 +22,7 @@
                           Padding="0,4,0,4">
 
                         <VerticalStackLayout Grid.Column="0">
-                            <Label Text="{Binding CategoriaId}" />
+                            <Label Text="{Binding CategoriaNome}" />
 
                             <Label Text="{Binding Data, StringFormat='{}{0:dd/MM/yyyy}'}" />
 
