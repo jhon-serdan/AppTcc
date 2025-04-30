@@ -12,7 +12,8 @@
 
         <CollectionView x:Name="lst_Transacoes"
                         ItemsSource="{Binding lista}"
-                        Margin="10,5,10,0">
+                        Margin="10,5,10,0"
+                        SelectionMode="Single">
 
             <CollectionView.ItemTemplate>
 
