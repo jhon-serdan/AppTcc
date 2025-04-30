@@ -15,6 +15,7 @@ namespace AppTcc
             Routing.RegisterRoute(nameof(PaginaAddReceita), typeof(PaginaAddReceita));
             Routing.RegisterRoute(nameof(PaginaAddTransferencia), typeof(PaginaAddTransferencia));
             Routing.RegisterRoute(nameof(PaginaInicial), typeof(PaginaInicial));
+            Routing.RegisterRoute(nameof(PaginaEditarItem), typeof(PaginaEditarItem));
 
         }
 

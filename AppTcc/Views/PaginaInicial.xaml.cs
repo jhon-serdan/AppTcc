@@ -1,5 +1,6 @@
-using AppTcc.Popups; // <- esse é o que importa aqui
+using AppTcc.Popups;
 using CommunityToolkit.Maui.Views;
+using Microsoft.Maui.Controls.PlatformConfiguration;
 
 namespace AppTcc.Views;
 
@@ -12,7 +13,7 @@ public partial class PaginaInicial : ContentPage
 
     private void FloatingActionButton_Clicked(object sender, EventArgs e)
     {
-        var popup = new PopupAdd(); // ou AdicionarPopup, se esse for o nome da classe
+        var popup = new PopupAdd();
         this.ShowPopup(popup);
     }
 
@@ -29,14 +30,10 @@ public partial class PaginaInicial : ContentPage
 
             string exportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "banco_financas.db3");
 
-            if(DeviceInfo.Platform == DevicePlatform.Android)
-            {
-                exportPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, "Download", "banco_financas.db3");
-            }
-
             File.Copy(dbPath, exportPath, true);
 
             await App.Current.MainPage.DisplayAlert("Sucesso", $"banco exportado para: {exportPath}", "OK");
+
         } catch (Exception ex)
         {
             await App.Current.MainPage.DisplayAlert("Erro", $"Falha ao exportar: {ex.Message}", "OK");

@@ -1,6 +1,8 @@
 using AppTcc.Helper;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Views;
+using AppTcc.Popups;
 
 
 namespace AppTcc.Views;
@@ -65,4 +67,12 @@ public partial class Transacoes : ContentPage
         
     }
 
+    private async void lst_Transacoes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.FirstOrDefault() is not null)
+        {
+            await App.Current.MainPage.ShowPopupAsync(new PopupDetalheItem());
+            lst_Transacoes.SelectedItem = null; // Limpa seleção para evitar popup repetido
+        }
+    }
 }

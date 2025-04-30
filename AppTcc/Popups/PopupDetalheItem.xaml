@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="AppTcc.Popups.PopupDetalheItem"
+    Color="Transparent">
+
+    <StackLayout
+        VerticalOptions="Center"
+        HorizontalOptions="Center"
+        Spacing="20">
+
+        <StackLayout Spacing="20">
+
+            <Button Text="Excluir" Clicked="Btn_Popup_Detalhe_Excluir"/>
+            <Button Text="Editar" Clicked="Button_Clicked"/>
+
+
+        </StackLayout>
+    </StackLayout>
+</toolkit:Popup>
