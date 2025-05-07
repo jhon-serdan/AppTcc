@@ -24,7 +24,7 @@
                                Text="Saldo total contas" />
 
                         <Label HorizontalOptions="Center"
-                               Text="R$ 50.000,00"
+                               x:Name="LblSaldoTotal"
                                Style="{StaticResource Padrao}"
                                FontSize="25"/>
 
@@ -42,14 +42,14 @@
 
                         <Grid ColumnDefinitions="*, *">
                             <Label Grid.Column="0"
-                                   Text="R$ 50,00"
+                                   x:Name="LblReceitaTotal"
                                    HorizontalOptions="Center"
                                    TextColor="Green"
                                    FontSize="20"
                                    FontAttributes="Bold"/>
 
                             <Label Grid.Column="1"
-                                   Text="R$ 150,00" 
+                                   x:Name="LblDespesaTotal"
                                    HorizontalOptions="Center"
                                    TextColor="Red"
                                    FontSize="20"
