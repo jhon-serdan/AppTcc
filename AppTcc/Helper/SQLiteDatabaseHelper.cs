@@ -131,6 +131,7 @@ namespace AppTcc.Helper
             {
                 decimal valorParcela = Math.Round(transacao.Valor / transacao.NumeroParcelas.Value, 2);
 
+                transacao.Valor = valorParcela;
                 transacao.ParcelaAtual = 1;
                 int id = await _conn.InsertAsync(transacao);
                 ids.Add(id);

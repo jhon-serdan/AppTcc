@@ -49,6 +49,8 @@ public partial class Transacoes : ContentPage
     }
     #endregion
 
+    #region Limpa a lista de transação para evitar valor repetido
+
     protected async override void OnAppearing()
     {
         try
@@ -63,16 +65,16 @@ public partial class Transacoes : ContentPage
         {
             await DisplayAlert("Ops", ex.Message, "oK");
         }
-
-        
     }
+
+    #endregion
 
     private async void lst_Transacoes_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (e.CurrentSelection.FirstOrDefault() is not null)
         {
             await App.Current.MainPage.ShowPopupAsync(new PopupDetalheItem());
-            lst_Transacoes.SelectedItem = null; // Limpa seleção para evitar popup repetido
+            lst_Transacoes.SelectedItem = null;
         }
     }
 }

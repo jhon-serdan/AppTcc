@@ -45,6 +45,13 @@
             
         </Picker>
 
+        <Label Text="Descrição"
+               Style="{StaticResource TituloItens}" />
+
+        <Entry x:Name="DescricaoReceita"
+               Placeholder="Infore a descrição"
+               Style="{StaticResource DefaultStyleEntryAbcd}" />
+
         <control:BtnHome x:Name="BtnHomeReceita" />
 
     </VerticalStackLayout>

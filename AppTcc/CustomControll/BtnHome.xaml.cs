@@ -2,7 +2,6 @@ namespace AppTcc.CustomControll;
 
 public partial class BtnHome : ContentView
 {
-    // Torne o evento público!
     public event EventHandler CancelarClicked;
     public event EventHandler AvancarClicked;
 

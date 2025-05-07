@@ -1,7 +1,7 @@
+namespace AppTcc.Views;
+
 using AppTcc.Helper;
 using CommunityToolkit.Maui.Views;
-
-namespace AppTcc.Views;
 
 public partial class PaginaAddDespesa : ContentPage
 {
