@@ -88,20 +88,40 @@ namespace AppTcc.Helper
 
         public async Task<List<Transacao>> ListarTransacaoMes (int mes, int ano)
         {
-            var transacoes = await _conn.Table<Transacao>()
-                .Where(t => t.Data.Month == mes && t.Data.Year == ano)
-                .OrderByDescending(t => t.Data)
-                .ToListAsync();
-
-            var categorias = await _conn.Table<Categoria>().ToListAsync();
-
-            foreach (var transacao in transacoes)
+            try
             {
-                var categoria = categorias.FirstOrDefault(c => c.Id == transacao.CategoriaId);
-                transacao.CategoriaNome = categoria?.Nome ?? "Categoria não encontrada;";
+                if (_conn == null)
+                {
+                    throw new Exception("Conexão com o banco de dados não iniciada");
+                }
+            
+
+
+                var transacoes = await _conn.Table<Transacao>()
+                    .Where(t => t.Data.Month == mes && t.Data.Year == ano)
+                    .OrderByDescending(t => t.Data)
+                    .ToListAsync();
+
+                if (transacoes == null)
+                {
+                    return new List<Transacao>();
+                }
+
+                var categorias = await _conn.Table<Categoria>().ToListAsync();
+
+                foreach (var transacao in transacoes)
+                {
+                    var categoria = categorias.FirstOrDefault(c => c.Id == transacao.CategoriaId);
+                    transacao.CategoriaNome = categoria?.Nome ?? "Categoria não encontrada;";
+                }
+                return transacoes;
             }
-            return transacoes;
-        }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Erro ao listar transações: {ex.Message}");
+                throw;
+            }
+        } 
 
         #endregion
 

@@ -15,13 +15,13 @@ namespace AppTcc.Helper
         public DateTime Data { get; set; }
         public int CategoriaId { get; set; }
         [Ignore]
-        public string CategoriaNome { get; set; }
+        public string CategoriaNome { get; set; } = string.Empty;
         public TipoTransacao Tipo { get; set; }
-        public string Descricao { get; set; }
+        public string Descricao { get; set; } = string.Empty;
         public bool EParcelado { get; set; }
         public int? NumeroParcelas { get; set; }
         public int? ParcelaAtual { get; set; }
         public int? TransacaoOrigemId { get; set; }
-        public string Conta { get; set; }
+        public string Conta { get; set; } = string.Empty;
     }
 }

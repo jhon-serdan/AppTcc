@@ -10,8 +10,6 @@ namespace AppTcc.Views;
 public partial class PaginaInicial : ContentPage
 {
 
-    ObservableCollection<Transacao> lista = new ObservableCollection<Transacao>();
-
     private decimal _somarReceitas = 0;
     private decimal _somarDespesas = 0;
     private decimal _saldoTotal = 0;
@@ -31,47 +29,67 @@ public partial class PaginaInicial : ContentPage
     {
         base.OnAppearing();
 
-        CarregarDadosMes(DatePickerPagInicial.Date.Month, DatePickerPagInicial.Date.Year);
+        CarregarDadosMes(DateTime.Now.Month, DateTime.Now.Year);
 
     }
 
-    private async void OnDatePickerDateSelected (object sender, DateChangedEventArgs e)
+    private void OnDatePickerDateSelected (object sender, DateChangedEventArgs args)
     {
-        await CarregarDadosMes(e.NewDate.Month, e.NewDate.Year);
+        CarregarDadosMes(args.NewDate.Month, args.NewDate.Year);
     }
 
-    private async Task CarregarDadosMes (int mes, int ano)
+    private async void CarregarDadosMes (int mes, int ano)
     {
         try
         {
+
+            _somarReceitas = 0;
+            _somarDespesas = 0;
+            _saldoTotal = 0;
+
+            LblSaldoTotal.Text = _saldoTotal.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
+            LblReceitaTotal.Text = _somarReceitas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
+            LblDespesaTotal.Text = _somarDespesas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
+
+            if (App.DB == null)
+            {
+                await DisplayAlert("Erro", "Banco de dados não inicializado", "OK");
+                return;
+            }
+
+
             var transacoes = await App.DB.ListarTransacaoMes(mes, ano);
 
-            _somarReceitas = 0;
-            _somarReceitas = 0;
+            if (transacoes == null || !transacoes.Any())
+            {
+                return;
+            }
 
-            _somarReceitas = transacoes
-                .Where(t => t.Tipo == TipoTransacao.Receita)
-                .Sum(t => (decimal)t.Valor);
+            var receitas = transacoes.Where(t => t.Tipo == TipoTransacao.Receita).ToList();
+            if (receitas.Any())
+            {
+                _somarReceitas = receitas.Sum(t => t.Valor);
+            }
 
-            _somarDespesas = transacoes
-                .Where(t => t.Tipo == TipoTransacao.Despesa)
-                .Sum(t => (decimal)t.Valor);
+            var despesas = transacoes.Where(t => t.Tipo == TipoTransacao.Despesa).ToList();
+            if (receitas.Any())
+            {
+                _somarDespesas = despesas.Sum(t => t.Valor);
+            }
 
             _saldoTotal = _somarReceitas - _somarDespesas;
 
-            AtualizarInterface();
+            LblSaldoTotal.Text = _saldoTotal.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
+            LblReceitaTotal.Text = _somarReceitas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
+            LblDespesaTotal.Text = _somarDespesas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
+
+
+
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Erro", $"Erro ao carregar os dados {ex.Message}", "OK");
+            await DisplayAlert("Erro", $"Erro ao carregar os dados teste {ex.Message}", "OK");
         }
-    }
-
-    private void AtualizarInterface ()
-    {
-        LblSaldoTotal.Text = _saldoTotal.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
-        LblDespesaTotal.Text = _somarDespesas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
-        LblReceitaTotal.Text = _somarReceitas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
     }
 
     private void FloatingActionButton_Clicked(object sender, EventArgs e)

@@ -46,7 +46,7 @@
                                    HorizontalOptions="Center"
                                    TextColor="Green"
                                    FontSize="20"
-                                   FontAttributes="Bold"/>
+                                   FontAttributes="Bold" />
 
                             <Label Grid.Column="1"
                                    x:Name="LblDespesaTotal"
