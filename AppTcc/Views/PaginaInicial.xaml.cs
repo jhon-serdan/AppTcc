@@ -3,11 +3,14 @@ using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using AppTcc.Helper;
 using System.Globalization;
+using System.Collections.ObjectModel;
 
 namespace AppTcc.Views;
 
 public partial class PaginaInicial : ContentPage
 {
+
+    ObservableCollection<Transacao> lista = new ObservableCollection<Transacao>();
 
     private decimal _somarReceitas = 0;
     private decimal _somarDespesas = 0;
@@ -28,6 +31,8 @@ public partial class PaginaInicial : ContentPage
     {
         base.OnAppearing();
 
+        CarregarDadosMes(DatePickerPagInicial.Date.Month, DatePickerPagInicial.Date.Year);
+
     }
 
     private async void OnDatePickerDateSelected (object sender, DateChangedEventArgs e)
@@ -40,6 +45,9 @@ public partial class PaginaInicial : ContentPage
         try
         {
             var transacoes = await App.DB.ListarTransacaoMes(mes, ano);
+
+            _somarReceitas = 0;
+            _somarReceitas = 0;
 
             _somarReceitas = transacoes
                 .Where(t => t.Tipo == TipoTransacao.Receita)
