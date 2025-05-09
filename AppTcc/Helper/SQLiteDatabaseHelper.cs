@@ -90,11 +90,9 @@ namespace AppTcc.Helper
         {
             try
             {
-                // Criar datas para o primeiro e último dia do mês
                 var primeiroDiaDoMes = new DateTime(ano, mes, 1);
                 var ultimoDiaDoMes = primeiroDiaDoMes.AddMonths(1).AddDays(-1);
 
-                // Consulta usando comparação de datas completas (isso o SQLite entende)
                 var transacoes = await _conn.Table<Transacao>()
                     .Where(t => t.Data >= primeiroDiaDoMes && t.Data <= ultimoDiaDoMes)
                     .OrderByDescending(t => t.Data)
@@ -112,7 +110,7 @@ namespace AppTcc.Helper
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Erro em ListarTransacaoMes: {ex.Message}");
-                return new List<Transacao>(); // Retorna lista vazia em caso de erro
+                return new List<Transacao>();
             }
         }
 
@@ -204,6 +202,30 @@ namespace AppTcc.Helper
 
 
         #endregion
+
+        public async Task<List<Transacao>> ListarTransacaoAteData(DateTime dataLimite)
+        {
+            try
+            {
+                var transacoes = await _conn.Table<Transacao>()
+                    .Where(t => t.Data <= dataLimite)
+                    .OrderBy(t => t.Data)
+                    .ToListAsync();
+
+                var categorias = await _conn.Table<Categoria>().ToListAsync();
+
+                foreach (var transacao in transacoes)
+                {
+                    var categoria = categorias.FirstOrDefault(c => c.Id == transacao.CategoriaId);
+                    transacao.CategoriaNome = categoria?.Nome ?? "Categoria não encontrada";
+                }
+                return transacoes;
+            } catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Erro ao ListarTransacaoAteData: {ex.Message}");
+                return new List<Transacao>();
+            }
+        }
 
         #endregion
 

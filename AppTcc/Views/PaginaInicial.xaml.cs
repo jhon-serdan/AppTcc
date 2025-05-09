@@ -43,27 +43,29 @@ public partial class PaginaInicial : ContentPage
         try
         {
 
-            var transacoes = await App.DB.ListarTransacaoMes(mes, ano);
+            var transacoesMesAtual = await App.DB.ListarTransacaoMes(mes, ano);
 
 
-            _somarReceitas = 0;
-            _somarDespesas = 0;
+            decimal receitaMesAtual = 0;
+            decimal despesaMesAtual = 0;
 
-            foreach (var transacao in transacoes)
+            foreach (var transacao in transacoesMesAtual)
             {
                 if (transacao.Tipo == TipoTransacao.Receita)
                 {
-                    _somarReceitas += transacao.Valor;
+                    receitaMesAtual += transacao.Valor;
                 }
                 else if (transacao.Tipo == TipoTransacao.Despesa)
                 {
-                    _somarDespesas += transacao.Valor;
+                    despesaMesAtual += transacao.Valor;
                 }
             }
 
+            decimal saldoAcumuladoAnterior = await CalcularSaldoAcumuladoMesAnterior(mes, ano);
 
-            _saldoTotal = _somarReceitas - _somarDespesas;
-
+            _somarReceitas = receitaMesAtual;
+            _somarDespesas = despesaMesAtual;
+            _saldoTotal = saldoAcumuladoAnterior + receitaMesAtual - despesaMesAtual;
 
             AtualizarInterface();
         }
@@ -72,6 +74,35 @@ public partial class PaginaInicial : ContentPage
             System.Diagnostics.Debug.WriteLine($"Erro ao carregar dados: {ex.Message}");
             await DisplayAlert("Erro", $"Erro ao carregar dados: {ex.Message}", "OK");
         }
+    }
+
+    private async Task<decimal> CalcularSaldoAcumuladoMesAnterior (int mesSelecionado, int anoSelecionado)
+    {
+        decimal saldoAcumulado = 0;
+
+        try
+        {
+            var dataLimite = new DateTime(anoSelecionado, mesSelecionado, 1).AddDays(-1);
+
+            var transacoesAnteriores = await App.DB.ListarTransacaoAteData(dataLimite);
+
+            foreach (var transacao in transacoesAnteriores)
+            {
+                if (transacao.Tipo == TipoTransacao.Receita)
+                {
+                    saldoAcumulado += transacao.Valor;
+                }
+                else if (transacao.Tipo == TipoTransacao.Despesa)
+                {
+                    saldoAcumulado -= transacao.Valor;
+                }
+            }
+        } catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Erro ao calcular o saldo anterior: {ex.Message}");
+        }
+
+        return saldoAcumulado;
     }
 
     private void AtualizarInterface()
