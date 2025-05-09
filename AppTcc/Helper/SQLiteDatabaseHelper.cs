@@ -86,42 +86,35 @@ namespace AppTcc.Helper
 
         #region Listar Transação Por Mes
 
-        public async Task<List<Transacao>> ListarTransacaoMes (int mes, int ano)
+        public async Task<List<Transacao>> ListarTransacaoMes(int mes, int ano)
         {
             try
             {
-                if (_conn == null)
-                {
-                    throw new Exception("Conexão com o banco de dados não iniciada");
-                }
-            
+                // Criar datas para o primeiro e último dia do mês
+                var primeiroDiaDoMes = new DateTime(ano, mes, 1);
+                var ultimoDiaDoMes = primeiroDiaDoMes.AddMonths(1).AddDays(-1);
 
-
+                // Consulta usando comparação de datas completas (isso o SQLite entende)
                 var transacoes = await _conn.Table<Transacao>()
-                    .Where(t => t.Data.Month == mes && t.Data.Year == ano)
+                    .Where(t => t.Data >= primeiroDiaDoMes && t.Data <= ultimoDiaDoMes)
                     .OrderByDescending(t => t.Data)
                     .ToListAsync();
-
-                if (transacoes == null)
-                {
-                    return new List<Transacao>();
-                }
 
                 var categorias = await _conn.Table<Categoria>().ToListAsync();
 
                 foreach (var transacao in transacoes)
                 {
                     var categoria = categorias.FirstOrDefault(c => c.Id == transacao.CategoriaId);
-                    transacao.CategoriaNome = categoria?.Nome ?? "Categoria não encontrada;";
+                    transacao.CategoriaNome = categoria?.Nome ?? "Categoria não encontrada";
                 }
                 return transacoes;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Erro ao listar transações: {ex.Message}");
-                throw;
+                System.Diagnostics.Debug.WriteLine($"Erro em ListarTransacaoMes: {ex.Message}");
+                return new List<Transacao>(); // Retorna lista vazia em caso de erro
             }
-        } 
+        }
 
         #endregion
 
