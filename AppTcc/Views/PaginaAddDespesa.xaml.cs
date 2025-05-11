@@ -158,7 +158,7 @@ public partial class PaginaAddDespesa : ContentPage
             }
 
             await DisplayAlert("Sucesso", "Transação salva com sucesso!", "OK");
-            await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync("PaginaInicial");
 
         }catch (Exception ex)
         {

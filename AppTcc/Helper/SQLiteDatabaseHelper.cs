@@ -116,7 +116,7 @@ namespace AppTcc.Helper
 
         #endregion
 
-        #region Listar Transação Por Mes
+        #region Listar Transação Futuras
 
         public async Task<List<Transacao>> ListarDespesasFuturas(int mesReferencia, int anoReferencia)
         {

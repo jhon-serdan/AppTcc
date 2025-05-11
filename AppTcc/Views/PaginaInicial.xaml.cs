@@ -43,6 +43,11 @@ public partial class PaginaInicial : ContentPage
         CarregarDadosMes(e.NewDate.Month, e.NewDate.Year);
     }
 
+    private async void CarregarDador()
+    {
+        DateTime dataSelecionada = DatePickerPagInicial.Date;
+    }
+
     private async Task CarregarDadosMes(int mes, int ano)
     {
         try
@@ -95,6 +100,9 @@ public partial class PaginaInicial : ContentPage
 
     private void CarregarDadosGrafico(Dictionary<string, decimal> despesasPorCategoria)
     {
+
+        DespesaGrafico.Chart = null;
+
         try
         {
             if (despesasPorCategoria.Count == 0)
@@ -148,6 +156,8 @@ public partial class PaginaInicial : ContentPage
             };
 
             DespesaGrafico.Chart = GraficoRosca;
+
+            DespesaGrafico.InvalidateMeasure();
 
         } catch (Exception ex)
         {
