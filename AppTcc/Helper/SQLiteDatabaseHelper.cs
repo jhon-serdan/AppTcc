@@ -116,6 +116,38 @@ namespace AppTcc.Helper
 
         #endregion
 
+        #region Listar Transação Por Mes
+
+        public async Task<List<Transacao>> ListarDespesasFuturas(int mesReferencia, int anoReferencia)
+        {
+            try
+            {
+                
+                var primeiroDiaProximoMes = new DateTime(anoReferencia, mesReferencia, 1).AddMonths(1);
+
+                var transacoes = await _conn.Table<Transacao>()
+                    .Where(t => t.Data >= primeiroDiaProximoMes && t.Tipo == TipoTransacao.Despesa)
+                    .OrderBy(t => t.Data)
+                    .ToListAsync();
+
+                var categorias = await _conn.Table<Categoria>().ToListAsync();
+
+                foreach (var transacao in transacoes)
+                {
+                    var categoria = categorias.FirstOrDefault(c => c.Id == transacao.CategoriaId);
+                    transacao.CategoriaNome = categoria?.Nome ?? "Categoria não encontrada";
+                }
+                return transacoes;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Erro em ListarDespesasFuturas: {ex.Message}");
+                return new List<Transacao>();
+            }
+        }
+
+        #endregion
+
         #region Salvar Transacao a Vista
 
         public Task<int> SalvarTransacoesAsync (Transacao transacao)
@@ -203,6 +235,7 @@ namespace AppTcc.Helper
 
         #endregion
 
+        #region Saldo Acumulado
         public async Task<List<Transacao>> ListarTransacaoAteData(DateTime dataLimite)
         {
             try
@@ -226,6 +259,8 @@ namespace AppTcc.Helper
                 return new List<Transacao>();
             }
         }
+
+        #endregion
 
         #endregion
 

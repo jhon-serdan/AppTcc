@@ -13,6 +13,7 @@ public partial class PaginaInicial : ContentPage
     private decimal _somarReceitas = 0;
     private decimal _somarDespesas = 0;
     private decimal _saldoTotal = 0;
+    private decimal _despesasFuturas = 0;
 
     public PaginaInicial()
     {
@@ -67,12 +68,33 @@ public partial class PaginaInicial : ContentPage
             _somarDespesas = despesaMesAtual;
             _saldoTotal = saldoAcumuladoAnterior + receitaMesAtual - despesaMesAtual;
 
+            await carregarDespesasFuturas(mes, ano);
+
             AtualizarInterface();
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Erro ao carregar dados: {ex.Message}");
             await DisplayAlert("Erro", $"Erro ao carregar dados: {ex.Message}", "OK");
+        }
+    }
+
+    private async Task carregarDespesasFuturas(int mes, int ano)
+    {
+        try
+        {
+            var despesasFuturas = await App.DB.ListarDespesasFuturas(mes, ano);
+
+            _despesasFuturas = 0;
+
+            foreach (var despesa in despesasFuturas)
+            {
+                _despesasFuturas += despesa.Valor;
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Erro ao carregar despesas futuras: {ex.Message}");
         }
     }
 
@@ -112,6 +134,8 @@ public partial class PaginaInicial : ContentPage
             LblSaldoTotal.Text = _saldoTotal.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
             LblReceitaTotal.Text = _somarReceitas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
             LblDespesaTotal.Text = _somarDespesas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
+
+            LblDespesasFuturas.Text = _despesasFuturas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
         }
         catch (Exception ex)
         {
