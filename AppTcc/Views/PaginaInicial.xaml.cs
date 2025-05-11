@@ -43,11 +43,6 @@ public partial class PaginaInicial : ContentPage
         CarregarDadosMes(e.NewDate.Month, e.NewDate.Year);
     }
 
-    private async void CarregarDador()
-    {
-        DateTime dataSelecionada = DatePickerPagInicial.Date;
-    }
-
     private async Task CarregarDadosMes(int mes, int ano)
     {
         try
@@ -222,6 +217,9 @@ public partial class PaginaInicial : ContentPage
             LblDespesaTotal.Text = _somarDespesas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
 
             LblDespesasFuturas.Text = _despesasFuturas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
+
+            CarregarDadosGrafico();
+
         }
         catch (Exception ex)
         {
