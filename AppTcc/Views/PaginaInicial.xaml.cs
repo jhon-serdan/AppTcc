@@ -1,13 +1,9 @@
 using AppTcc.Popups;
 using CommunityToolkit.Maui.Views;
-using Microsoft.Maui.Controls.PlatformConfiguration;
 using AppTcc.Helper;
 using System.Globalization;
-using System.Collections.ObjectModel;
 using Microcharts;
-using Microcharts.Maui;
 using SkiaSharp;
-using System.Collections.ObjectModel;
 
 namespace AppTcc.Views;
 
@@ -41,12 +37,18 @@ public partial class PaginaInicial : ContentPage
     private void OnDatePickerDateSelected (object sender, DateChangedEventArgs e)
     {
         CarregarDadosMes(e.NewDate.Month, e.NewDate.Year);
+
     }
 
     private async Task CarregarDadosMes(int mes, int ano)
     {
         try
         {
+
+            _somarDespesas = 0;
+            _somarReceitas = 0;
+            _saldoTotal = 0;
+            _despesasFuturas = 0;
 
             var transacoesMesAtual = await App.DB.ListarTransacaoMes(mes, ano);
 
@@ -81,6 +83,7 @@ public partial class PaginaInicial : ContentPage
             _saldoTotal = saldoAcumuladoAnterior + receitaMesAtual - despesaMesAtual;
 
             await carregarDespesasFuturas(mes, ano);
+
             CarregarDadosGrafico(despesasPorCategoria);
 
             AtualizarInterface();
@@ -96,12 +99,14 @@ public partial class PaginaInicial : ContentPage
     private void CarregarDadosGrafico(Dictionary<string, decimal> despesasPorCategoria)
     {
 
-        DespesaGrafico.Chart = null;
+        DespesaGrafico.Chart = null; // Limpa o gráfico anterior
 
         try
         {
+            // Oculta o gráfico se não houver dados
             if (despesasPorCategoria.Count == 0)
             {
+                DespesaGrafico.Chart = null;
                 DespesaGrafico.IsVisible = false;
                 LblSemDespesa.IsVisible = true;
                 return;
@@ -111,7 +116,7 @@ public partial class PaginaInicial : ContentPage
             LblSemDespesa.IsVisible = false;
 
             var cores = new List<SKColor>
-            {
+        {
             SKColor.Parse("#FF5722"),  // Laranja
             SKColor.Parse("#3F51B5"),  // Azul
             SKColor.Parse("#4CAF50"),  // Verde
@@ -122,12 +127,12 @@ public partial class PaginaInicial : ContentPage
             SKColor.Parse("#607D8B"),  // Cinza azulado
             SKColor.Parse("#795548"),  // Marrom
             SKColor.Parse("#009688")   // Esmeralda
-            };
+        };
 
             var entradas = new List<ChartEntry>();
             int colorIndex = 0;
 
-            foreach (var categoria in despesasPorCategoria)
+            foreach (var categoria in despesasPorCategoria.OrderByDescending(c => c.Value))
             {
                 var cor = cores[colorIndex % cores.Count];
                 colorIndex++;
@@ -140,19 +145,26 @@ public partial class PaginaInicial : ContentPage
                 });
             }
 
-            var GraficoRosca = new DonutChart
+            // Limpa o gráfico atual
+            DespesaGrafico.Chart = null;
+
+            // Força o "refresh" com atraso e reinicialização do gráfico
+            MainThread.BeginInvokeOnMainThread(async () =>
             {
-                Entries = entradas,
-                BackgroundColor = SKColors.Transparent,
-                HoleRadius = 0.5f,
-                LabelTextSize = 60f,
-                LabelMode = LabelMode.RightOnly,
-                GraphPosition = GraphPosition.AutoFill
-            };
+                await Task.Delay(50); // pequeno atraso para garantir que o gráfico anterior seja removido
 
-            DespesaGrafico.Chart = GraficoRosca;
+                DespesaGrafico.Chart = new DonutChart
+                {
+                    Entries = entradas,
+                    BackgroundColor = SKColors.Transparent,
+                    HoleRadius = 0.5f,
+                    LabelTextSize = 60f,
+                    LabelMode = LabelMode.RightOnly,
+                    GraphPosition = GraphPosition.AutoFill
+                };
 
-            DespesaGrafico.InvalidateMeasure();
+                DespesaGrafico.InvalidateMeasure(); // atualiza visualmente
+            });
 
         } catch (Exception ex)
         {
@@ -217,9 +229,6 @@ public partial class PaginaInicial : ContentPage
             LblDespesaTotal.Text = _somarDespesas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
 
             LblDespesasFuturas.Text = _despesasFuturas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
-
-            CarregarDadosGrafico();
-
         }
         catch (Exception ex)
         {
