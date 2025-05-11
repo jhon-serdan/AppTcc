@@ -1,6 +1,8 @@
 ﻿using AppTcc.Helper;
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using Microcharts.Maui;
+
 
 namespace AppTcc
 {
@@ -12,6 +14,7 @@ namespace AppTcc
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseMicrocharts()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

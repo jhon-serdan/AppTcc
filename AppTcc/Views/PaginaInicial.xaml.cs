@@ -4,6 +4,10 @@ using Microsoft.Maui.Controls.PlatformConfiguration;
 using AppTcc.Helper;
 using System.Globalization;
 using System.Collections.ObjectModel;
+using Microcharts;
+using Microcharts.Maui;
+using SkiaSharp;
+using System.Collections.ObjectModel;
 
 namespace AppTcc.Views;
 
@@ -50,6 +54,8 @@ public partial class PaginaInicial : ContentPage
             decimal receitaMesAtual = 0;
             decimal despesaMesAtual = 0;
 
+            Dictionary<string, decimal> despesasPorCategoria = new Dictionary<string, decimal>();
+
             foreach (var transacao in transacoesMesAtual)
             {
                 if (transacao.Tipo == TipoTransacao.Receita)
@@ -59,6 +65,12 @@ public partial class PaginaInicial : ContentPage
                 else if (transacao.Tipo == TipoTransacao.Despesa)
                 {
                     despesaMesAtual += transacao.Valor;
+
+                    if (!despesasPorCategoria.ContainsKey(transacao.CategoriaNome))
+                    {
+                        despesasPorCategoria[transacao.CategoriaNome] = 0;
+                    }
+                    despesasPorCategoria[transacao.CategoriaNome] += transacao.Valor;
                 }
             }
 
@@ -71,11 +83,72 @@ public partial class PaginaInicial : ContentPage
             await carregarDespesasFuturas(mes, ano);
 
             AtualizarInterface();
+
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Erro ao carregar dados: {ex.Message}");
             await DisplayAlert("Erro", $"Erro ao carregar dados: {ex.Message}", "OK");
+        }
+    }
+
+    private void CarregarDadosGrafico(Dictionary<string, decimal> despesasPorCategoria)
+    {
+        try
+        {
+            if (despesasPorCategoria.Count == 0)
+            {
+                DespesaGrafico.IsVisible = false;
+                LblSemDespesa.IsVisible = true;
+                return;
+            }
+
+            DespesaGrafico.IsVisible = true;
+            LblSemDespesa.IsVisible = false;
+
+            var cores = new List<SKColor>
+            {
+            SKColor.Parse("#FF5722"),  // Laranja
+            SKColor.Parse("#3F51B5"),  // Azul
+            SKColor.Parse("#4CAF50"),  // Verde
+            SKColor.Parse("#9C27B0"),  // Roxo
+            SKColor.Parse("#2196F3"),  // Azul claro
+            SKColor.Parse("#FFC107"),  // Amarelo
+            SKColor.Parse("#E91E63"),  // Rosa
+            SKColor.Parse("#607D8B"),  // Cinza azulado
+            SKColor.Parse("#795548"),  // Marrom
+            SKColor.Parse("#009688")   // Esmeralda
+            };
+
+            var entradas = new List<ChartEntry>();
+            int colorIndex = 0;
+
+            foreach (var categoria in despesasPorCategoria)
+            {
+                var cor = cores[colorIndex % cores.Count];
+                colorIndex++;
+
+                entradas.Add(new ChartEntry((float)categoria.Value)
+                {
+                    Label = categoria.Key,
+                    ValueLabel = categoria.Value.ToString("C"),
+                    Color = cor
+                });
+            }
+
+            var GraficoRosca = new DonutChart
+            {
+                Entries = entradas,
+                BackgroundColor = SKColors.Transparent,
+                HoleRadius = 0.06f,
+                LabelTextSize = 30f
+            };
+
+            DespesaGrafico.Chart = GraficoRosca;
+
+        } catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Erro ao carregar o gráfico: {ex.Message}");
         }
     }
 
