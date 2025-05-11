@@ -81,6 +81,7 @@ public partial class PaginaInicial : ContentPage
             _saldoTotal = saldoAcumuladoAnterior + receitaMesAtual - despesaMesAtual;
 
             await carregarDespesasFuturas(mes, ano);
+            CarregarDadosGrafico(despesasPorCategoria);
 
             AtualizarInterface();
 
@@ -131,7 +132,7 @@ public partial class PaginaInicial : ContentPage
                 entradas.Add(new ChartEntry((float)categoria.Value)
                 {
                     Label = categoria.Key,
-                    ValueLabel = categoria.Value.ToString("C"),
+                    ValueLabel = categoria.Value.ToString("C", CultureInfo.GetCultureInfo("pt-BR")),
                     Color = cor
                 });
             }
@@ -140,8 +141,10 @@ public partial class PaginaInicial : ContentPage
             {
                 Entries = entradas,
                 BackgroundColor = SKColors.Transparent,
-                HoleRadius = 0.06f,
-                LabelTextSize = 30f
+                HoleRadius = 0.5f,
+                LabelTextSize = 60f,
+                LabelMode = LabelMode.RightOnly,
+                GraphPosition = GraphPosition.AutoFill
             };
 
             DespesaGrafico.Chart = GraficoRosca;

@@ -103,9 +103,8 @@
                     <VerticalStackLayout>
 
                         <micro:ChartView x:Name="DespesaGrafico"
-                                              HeightRequest="200"
-                                              WidthRequest="200"
-                                              HorizontalOptions="Center" />
+                                         HeightRequest="300"
+                                         WidthRequest="300"/>
 
                         <Label x:Name="LblSemDespesa"
                                Text="Sem desesas neste mês"
