@@ -13,7 +13,7 @@ namespace AppTcc
             {
                 if (_db == null)
                 {
-                    string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "banco_financas.db3");
+                    string path = Path.Combine(FileSystem.AppDataDirectory, "banco_financas.db3");
 
                     _db = new SQLiteDatabaseHelper(path);
                 }

@@ -4,6 +4,7 @@ using AppTcc.Helper;
 using System.Globalization;
 using Microcharts;
 using SkiaSharp;
+using Microsoft.Maui.Controls.PlatformConfiguration;
 
 namespace AppTcc.Views;
 
@@ -251,15 +252,22 @@ public partial class PaginaInicial : ContentPage
     {
         try
         {
+            // Caminho de ORIGEM: Diretório de dados interno do aplicativo
             string dbPath = Path.Combine(FileSystem.AppDataDirectory, "banco_financas.db3");
 
-            string exportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "banco_financas.db3");
+            // Caminho de DESTINO: Pasta de Downloads
+            string downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+            string exportPath = Path.Combine(downloadsPath, "banco_financas.db3");
+
+            await App.Current.MainPage.DisplayAlert("Caminho de Origem (DB):", dbPath, "OK"); // Para verificar
+            await App.Current.MainPage.DisplayAlert("Caminho de Destino (Downloads):", exportPath, "OK"); // Para verificar
 
             File.Copy(dbPath, exportPath, true);
 
             await App.Current.MainPage.DisplayAlert("Sucesso", $"banco exportado para: {exportPath}", "OK");
 
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             await App.Current.MainPage.DisplayAlert("Erro", $"Falha ao exportar: {ex.Message}", "OK");
         }

@@ -72,7 +72,8 @@
                         <RoundRectangle CornerRadius="10,10,10,10" />
                     </Border.StrokeShape>
 
-                    <Label Text="R$ 150,00" />
+                    <Label Text="R$ 150,00"
+                           Style="{StaticResource DefaultLblPadrado}"/>
                 </Border>
 
                 <!--Poupança-->
@@ -86,7 +87,8 @@
                         <RoundRectangle CornerRadius="10,10,10,10" />
                     </Border.StrokeShape>
 
-                    <Label Text="R$ 150,00" />
+                    <Label Text="R$ 150,00"
+                           Style="{StaticResource DefaultLblPadrado}"/>
                 </Border>
             
                 <!--Categoria-->
@@ -126,7 +128,8 @@
                     </Border.StrokeShape>
 
                     <Label Text="inserir valores"
-                           x:Name="LblDespesasFuturas"/>
+                           x:Name="LblDespesasFuturas"
+                           Style="{StaticResource DefaultLblPadrado}"/>
                 </Border>
 
                 <Button x:Name="ExportarBanco"
