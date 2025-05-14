@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using SQLite;
 
 namespace AppTcc.Helper
@@ -17,7 +18,8 @@ namespace AppTcc.Helper
             _conn = new SQLiteAsyncConnection(dbPath);
             _conn.CreateTableAsync<Categoria>().Wait();
             _conn.CreateTableAsync<Transacao>().Wait();
-            
+            _conn.CreateTableAsync<Conta>().Wait();
+
             var categorias = _conn.Table<Categoria>().ToListAsync().Result;
             if (categorias.Count == 0)
             {
@@ -258,6 +260,96 @@ namespace AppTcc.Helper
                 System.Diagnostics.Debug.WriteLine($"Erro ao ListarTransacaoAteData: {ex.Message}");
                 return new List<Transacao>();
             }
+        }
+
+        #endregion
+
+        #region Gerenciamento Contas
+
+        #region Registra o movimento entre as contas
+        public async Task<int> RegistrarMovimentacaoAsync(string tipo, decimal valor, string descricao, DateTime data, int transacaoId)
+        {
+            var movimento = new Conta()
+            {
+                Tipo = tipo,
+                Valor = valor,
+                Descricao = descricao,
+                Data = data,
+                TransacaoID = transacaoId
+            };
+
+            return await _conn.InsertAsync(movimento);
+        }
+
+        #endregion
+
+        #region Calcular Saldo Conta
+        public async Task<decimal> CalcularSaldoAsync(string tipo)
+        {
+            try
+            {
+                var saldo = await _conn.Table<Conta>()
+                    .Where(c => c.Tipo == tipo)
+                    .ToListAsync();
+
+                return saldo.Sum(c => c.Valor);
+
+            } catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Erro ao calcular o saldo: {ex.Message}");
+                return 0;
+            }
+        }
+
+        #endregion
+
+        #region verificação se há saldo suficiente na conta
+
+        public async Task<bool> TemSaldoSuficienteAsync(string tipo, decimal valorNecessario)
+        {
+            decimal saldo = await CalcularSaldoAsync(tipo);
+            return saldo >= valorNecessario;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Processamento Trasanção Contas
+
+        public async Task<int> ProcessarReceitaAsync (Transacao transacao)
+        {
+            int transacaoId = await _conn.InsertAsync(transacao);
+
+            await RegistrarMovimentacaoAsync("Corrente", transacao.Valor, $"Receita: {transacao.Descricao}", transacao.Data, transacaoId);
+
+            return transacaoId;
+        } 
+
+        public async Task<int> ProcessarDespesaAsync(Transacao transacao)
+        {
+            
+            if (!await TemSaldoSuficienteAsync("Corrente", transacao.Valor))
+                throw new Exception("Saldo insuficiente na conta corrente.");
+
+            int transacaoId = await _conn.InsertAsync(transacao);
+
+            await RegistrarMovimentacaoAsync("Corrente", -transacao.Valor, $"Despesa: {transacao.Descricao}", transacao.Data, transacaoId);
+
+            return transacaoId;
+
+        }
+
+        private async Task<int> ProcessarTransferenciaAsync(Transacao transacao, string tipoOrigem, string tipoDestino)
+        {
+            if (!await TemSaldoSuficienteAsync(tipoOrigem, transacao.Valor))
+                throw new Exception($"Saldo insuficiente na conta {tipoOrigem}.");
+
+            int transacaoId = await _conn.InsertAsync(transacao);
+
+            await RegistrarMovimentacaoAsync(tipoDestino, transacao.Valor, $"Transferência de {tipoOrigem}", transacao.Data, transacaoId);
+
+            return transacaoId;
         }
 
         #endregion
