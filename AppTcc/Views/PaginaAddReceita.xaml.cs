@@ -25,7 +25,7 @@ public partial class PaginaAddReceita : ContentPage
 
     #endregion
 
-    #region Carrega as categorias de despesa
+    #region Carrega as categorias de Receita
     private async void CarregarCategorias()
     {
         try
@@ -95,20 +95,18 @@ public partial class PaginaAddReceita : ContentPage
             int categoriaIndex = PckCategoriaReceita.SelectedIndex;
             var categoriaSelecionada = _categorias[categoriaIndex - 1];
 
-            var transacao = new Transacao
+            var transacao = new Conta
             {
+                Tipo = "Corrente",
                 Valor = Convert.ToDecimal(EntryValorReceita.Text),
-                Data = DtpckReceita.Date,
-                CategoriaId = categoriaSelecionada.Id,
-                Tipo = TipoTransacao.Receita,
                 Descricao = DescricaoReceita.Text,
-                Conta = "Carteira"
+                Data = DtpckReceita.Date,
             };
 
-                await App.DB.SalvarTransacoesAsync(transacao);
+            await App.DB.ProcessarReceitaAsync(Conta);
 
             await DisplayAlert("Sucesso", "Transação salva com sucesso!", "OK");
-            await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync("PaginaInicial");
 
         }
         catch (Exception ex)
