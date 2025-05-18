@@ -7,7 +7,7 @@ using SQLite;
 
 namespace AppTcc.Helper
 {
-    internal class Conta
+    public class Conta
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }

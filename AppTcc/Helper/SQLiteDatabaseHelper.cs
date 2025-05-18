@@ -317,11 +317,11 @@ namespace AppTcc.Helper
 
         #region Processamento Trasanção Contas
 
-        public async Task<int> ProcessarReceitaAsync (Transacao transacao)
+        public async Task<int> ProcessarReceitaAsync (Conta conta)
         {
-            int transacaoId = await _conn.InsertAsync(transacao);
+            int transacaoId = await _conn.InsertAsync(conta);
 
-            await RegistrarMovimentacaoAsync("Corrente", transacao.Valor, $"Receita: {transacao.Descricao}", transacao.Data, transacaoId);
+            await RegistrarMovimentacaoAsync("Corrente", conta.Valor, $"Receita: {conta.Descricao}", conta.Data, transacaoId);
 
             return transacaoId;
         } 

@@ -235,7 +235,7 @@ public partial class PaginaInicial : ContentPage
 
             LblDespesasFuturas.Text = _despesasFuturas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
 
-            LblReceitaTotal.Text = _saldoCorrente.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
+            LblSaldoCarteira.Text = _saldoCorrente.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
             LblSaldoPoupanca.Text = _saldoPoupanca.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
             LblSaldoTotal2.Text = _saldoTotal2.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
 
@@ -277,17 +277,10 @@ public partial class PaginaInicial : ContentPage
         {
             // Caminhos dos bancos de dados (conforme visto na sua screenshot)
             string appDir = "/data/user/0/com.companyname.apptcc/files/";
-            string transacoesDbPath = Path.Combine(appDir, "transacoes.db3");
             string financasDbPath = Path.Combine(appDir, "banco_financas.db3");
 
             // Pasta de destino (Downloads é acessível ao usuário)
             string destinationDir = "/storage/emulated/0/Download/";
-
-            // Copia os arquivos (se existirem)
-            if (File.Exists(transacoesDbPath))
-            {
-                File.Copy(transacoesDbPath, Path.Combine(destinationDir, "transacoes_export.db3"), true);
-            }
 
             if (File.Exists(financasDbPath))
             {

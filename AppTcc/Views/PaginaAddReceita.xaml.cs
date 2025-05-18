@@ -103,7 +103,7 @@ public partial class PaginaAddReceita : ContentPage
                 Data = DtpckReceita.Date,
             };
 
-            await App.DB.ProcessarReceitaAsync(Conta);
+            await App.DB.ProcessarReceitaAsync(transacao);
 
             await DisplayAlert("Sucesso", "Transação salva com sucesso!", "OK");
             await Shell.Current.GoToAsync("PaginaInicial");
