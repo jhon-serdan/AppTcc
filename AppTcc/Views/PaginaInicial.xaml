@@ -144,7 +144,10 @@
                 Clicked="ExportarBanco_Clicked"/>
 
                 <Button Text="Listar Diretórios"
-                Clicked="ListarDiretorios_Clicked" />
+                Clicked="ListarDiretorios_Clicked"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30" />
 
 
 
