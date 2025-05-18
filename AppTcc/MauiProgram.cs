@@ -30,6 +30,12 @@ namespace AppTcc
                     fonts.AddFont("Lato-Thin.ttf", "LatoThin");
                 });
 
+            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "transacoes.db3");
+
+            var dbHelper = new SQLiteDatabaseHelper(dbPath);
+
+            builder.Services.AddSingleton<SQLiteDatabaseHelper>(s => dbHelper);
+
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif

@@ -30,11 +30,6 @@
                                Style="{StaticResource Padrao}"
                                FontSize="25"/>
 
-                        <Label HorizontalOptions="Center"
-                               x:Name="LblSaldoTotal2"
-                               Style="{StaticResource Padrao}"
-                               FontSize="25"/>
-
                         <Grid ColumnDefinitions="*, *">
                             <Label Grid.Column="0"
                                    Text="Receita"
@@ -77,9 +72,7 @@
                         <RoundRectangle CornerRadius="10,10,10,10" />
                     </Border.StrokeShape>
 
-                    <Label Text="R$ 150,00"
-                           x:Name="LblSaldoCarteira"
-                           Style="{StaticResource DefaultLblPadrado}"/>
+                    <Label Text="R$ 150,00" />
                 </Border>
 
                 <!--Poupança-->
@@ -93,9 +86,7 @@
                         <RoundRectangle CornerRadius="10,10,10,10" />
                     </Border.StrokeShape>
 
-                    <Label Text="R$ 150,00"
-                           x:Name="LblSaldoPoupanca"
-                           Style="{StaticResource DefaultLblPadrado}"/>
+                    <Label Text="R$ 150,00" />
                 </Border>
             
                 <!--Categoria-->
@@ -135,26 +126,20 @@
                     </Border.StrokeShape>
 
                     <Label Text="inserir valores"
-                           x:Name="LblDespesasFuturas"
-                           Style="{StaticResource DefaultLblPadrado}"/>
+                           x:Name="LblDespesasFuturas"/>
                 </Border>
 
                 <Button x:Name="ExportarBanco"
                 Text="Exportar banco"
                 Clicked="ExportarBanco_Clicked"/>
 
-                <Button Text="Listar Diretórios"
-                Clicked="ListarDiretorios_Clicked"
-                WidthRequest="60"
-                HeightRequest="60"
-                CornerRadius="30" />
-
-
-
             </VerticalStackLayout>
             
             
         </ScrollView>
+
+
+
 
         <Button 
             Text="+"
@@ -168,7 +153,6 @@
             VerticalOptions="End"
             Margin="0,0,0,10"
             Clicked="FloatingActionButton_Clicked"/>
-
 
     </Grid>
 </ContentPage>

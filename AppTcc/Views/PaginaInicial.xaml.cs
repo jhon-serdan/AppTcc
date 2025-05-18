@@ -4,8 +4,6 @@ using AppTcc.Helper;
 using System.Globalization;
 using Microcharts;
 using SkiaSharp;
-using Microsoft.Maui.Controls.PlatformConfiguration;
-using System.Text;
 
 namespace AppTcc.Views;
 
@@ -16,9 +14,6 @@ public partial class PaginaInicial : ContentPage
     private decimal _somarDespesas = 0;
     private decimal _saldoTotal = 0;
     private decimal _despesasFuturas = 0;
-    private decimal _saldoPoupanca = 0;
-    private decimal _saldoCorrente = 0;
-    private decimal _saldoTotal2 = 0;
 
     public PaginaInicial()
     {
@@ -234,11 +229,6 @@ public partial class PaginaInicial : ContentPage
             LblDespesaTotal.Text = _somarDespesas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
 
             LblDespesasFuturas.Text = _despesasFuturas.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
-
-            LblSaldoCarteira.Text = _saldoCorrente.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
-            LblSaldoPoupanca.Text = _saldoPoupanca.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
-            LblSaldoTotal2.Text = _saldoTotal2.ToString("C", CultureInfo.GetCultureInfo("pt-BR"));
-
         }
         catch (Exception ex)
         {
@@ -252,115 +242,26 @@ public partial class PaginaInicial : ContentPage
         this.ShowPopup(popup);
     }
 
-    public async Task CarregarSaldos()
-    {
-        try
-        {
-            var db = App.DB;
-
-            decimal _saldoCorrente = await db.CalcularSaldoAsync("Corrente");
-            decimal _saldoPoupanca = await db.CalcularSaldoAsync("Poupança");
-            decimal _saldoTotal2 = _saldoCorrente + _saldoPoupanca;
-
-
-
-
-        } catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Erro ao carregar saldos: {ex.Message}");
-        }
-    }
-
     private async void ExportarBanco_Clicked(object sender, EventArgs e)
     {
-        try
-        {
-            // Caminhos dos bancos de dados (conforme visto na sua screenshot)
-            string appDir = "/data/user/0/com.companyname.apptcc/files/";
-            string financasDbPath = Path.Combine(appDir, "banco_financas.db3");
-
-            // Pasta de destino (Downloads é acessível ao usuário)
-            string destinationDir = "/storage/emulated/0/Download/";
-
-            if (File.Exists(financasDbPath))
-            {
-                File.Copy(financasDbPath, Path.Combine(destinationDir, "banco_financas_export.db3"), true);
-            }
-
-            await DisplayAlert("Sucesso", "Bancos de dados exportados para a pasta Downloads", "OK");
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erro", $"Falha ao exportar: {ex.Message}", "OK");
-        }
+        await ExportarBancoAsync();
     }
 
     public async Task ExportarBancoAsync()
     {
         try
         {
-            // Caminho de ORIGEM: Diretório de dados interno do aplicativo
             string dbPath = Path.Combine(FileSystem.AppDataDirectory, "banco_financas.db3");
 
-            // Caminho de DESTINO: Pasta de Downloads
-            string downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
-            string exportPath = Path.Combine(downloadsPath, "banco_financas.db3");
-
-            await App.Current.MainPage.DisplayAlert("Caminho de Origem (DB):", dbPath, "OK"); // Para verificar
-            await App.Current.MainPage.DisplayAlert("Caminho de Destino (Downloads):", exportPath, "OK"); // Para verificar
+            string exportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "banco_financas.db3");
 
             File.Copy(dbPath, exportPath, true);
 
             await App.Current.MainPage.DisplayAlert("Sucesso", $"banco exportado para: {exportPath}", "OK");
 
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             await App.Current.MainPage.DisplayAlert("Erro", $"Falha ao exportar: {ex.Message}", "OK");
-        }
-    }
-
-    private async void ListarDiretorios_Clicked(object sender, EventArgs e)
-    {
-        try
-        {
-            // Começamos com o diretório base da aplicação
-            string baseDir = FileSystem.AppDataDirectory;
-
-            // Lista os arquivos e diretórios
-            var diretorios = Directory.GetDirectories(baseDir);
-            var arquivos = Directory.GetFiles(baseDir);
-
-            // Cria uma string formatada com o conteúdo
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine($"Diretório base: {baseDir}");
-            sb.AppendLine("\nDiretórios:");
-            foreach (var dir in diretorios)
-            {
-                sb.AppendLine($"- {Path.GetFileName(dir)}");
-            }
-
-            sb.AppendLine("\nArquivos:");
-            foreach (var arquivo in arquivos)
-            {
-                sb.AppendLine($"- {Path.GetFileName(arquivo)}");
-            }
-
-            // Verifica arquivos .db3 especificamente
-            sb.AppendLine("\nArquivos de banco de dados (*.db3):");
-            var dbFiles = Directory.GetFiles(baseDir, "*.db3", SearchOption.AllDirectories);
-            foreach (var db in dbFiles)
-            {
-                sb.AppendLine($"- {db}");
-            }
-
-            // Exibe o resultado
-            await DisplayAlert("Arquivos e Diretórios", sb.ToString(), "OK");
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erro", $"Erro ao listar diretórios: {ex.Message}", "OK");
         }
     }
 
