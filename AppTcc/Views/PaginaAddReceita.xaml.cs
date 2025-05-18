@@ -99,6 +99,7 @@ public partial class PaginaAddReceita : ContentPage
             {
                 Tipo = "Corrente",
                 Valor = Convert.ToDecimal(EntryValorReceita.Text),
+                CategoriaId = categoriaSelecionada.Id,
                 Descricao = DescricaoReceita.Text,
                 Data = DtpckReceita.Date,
             };

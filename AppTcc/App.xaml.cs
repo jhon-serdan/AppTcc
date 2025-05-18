@@ -6,6 +6,7 @@ namespace AppTcc
     {
 
         static SQLiteDatabaseHelper _db;
+        static SQLiteDatabaseHelper _db2;
 
         public static SQLiteDatabaseHelper DB
         {

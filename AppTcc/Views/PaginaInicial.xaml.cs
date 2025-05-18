@@ -275,7 +275,7 @@ public partial class PaginaInicial : ContentPage
     {
         try
         {
-            // Caminhos dos bancos de dados (conforme visto na sua screenshot)
+            // Caminhos dos bancos de dados
             string appDir = "/data/user/0/com.companyname.apptcc/files/";
             string financasDbPath = Path.Combine(appDir, "banco_financas.db3");
 
@@ -292,31 +292,6 @@ public partial class PaginaInicial : ContentPage
         catch (Exception ex)
         {
             await DisplayAlert("Erro", $"Falha ao exportar: {ex.Message}", "OK");
-        }
-    }
-
-    public async Task ExportarBancoAsync()
-    {
-        try
-        {
-            // Caminho de ORIGEM: Diretório de dados interno do aplicativo
-            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "banco_financas.db3");
-
-            // Caminho de DESTINO: Pasta de Downloads
-            string downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
-            string exportPath = Path.Combine(downloadsPath, "banco_financas.db3");
-
-            await App.Current.MainPage.DisplayAlert("Caminho de Origem (DB):", dbPath, "OK"); // Para verificar
-            await App.Current.MainPage.DisplayAlert("Caminho de Destino (Downloads):", exportPath, "OK"); // Para verificar
-
-            File.Copy(dbPath, exportPath, true);
-
-            await App.Current.MainPage.DisplayAlert("Sucesso", $"banco exportado para: {exportPath}", "OK");
-
-        }
-        catch (Exception ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Erro", $"Falha ao exportar: {ex.Message}", "OK");
         }
     }
 

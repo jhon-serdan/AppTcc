@@ -118,7 +118,7 @@ namespace AppTcc.Helper
 
         #endregion
 
-        #region Listar Transação Futuras
+        #region Listar Despesas Futuras
 
         public async Task<List<Transacao>> ListarDespesasFuturas(int mesReferencia, int anoReferencia)
         {
@@ -150,7 +150,7 @@ namespace AppTcc.Helper
 
         #endregion
 
-        #region Salvar Transacao a Vista
+        #region Salvar Despesa a Vista
 
         public Task<int> SalvarTransacoesAsync (Transacao transacao)
         {
@@ -166,7 +166,7 @@ namespace AppTcc.Helper
 
         #endregion
 
-        #region Salvar Transacao Parcelada
+        #region Salvar Despesa Parcelada
 
         public async Task<List<int>> SalvarTransacaoParcelada (Transacao transacao)
         {
@@ -317,13 +317,16 @@ namespace AppTcc.Helper
 
         #region Processamento Trasanção Contas
 
-        public async Task<int> ProcessarReceitaAsync (Conta conta)
+        public Task<int> ProcessarReceitaAsync (Conta conta)
         {
-            int transacaoId = await _conn.InsertAsync(conta);
-
-            await RegistrarMovimentacaoAsync("Corrente", conta.Valor, $"Receita: {conta.Descricao}", conta.Data, transacaoId);
-
-            return transacaoId;
+            if (conta.Id != 0)
+            {
+                return _conn.UpdateAsync(conta);
+            }
+            else
+            {
+                return _conn.InsertAsync(conta);
+            }
         } 
 
         public async Task<int> ProcessarDespesaAsync(Transacao transacao)
