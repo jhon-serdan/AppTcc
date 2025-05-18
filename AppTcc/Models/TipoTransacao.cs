@@ -9,7 +9,6 @@ namespace AppTcc.Helper
     public enum TipoTransacao
     {
         Receita,
-        Despesa,
-        Transferência
+        Despesa
     }
 }

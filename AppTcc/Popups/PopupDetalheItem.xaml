@@ -5,7 +5,8 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Class="AppTcc.Popups.PopupDetalheItem"
     Color="Transparent">
-
+   
+    
     <StackLayout
         VerticalOptions="Center"
         HorizontalOptions="Center"
@@ -14,7 +15,7 @@
         <StackLayout Spacing="20">
 
             <Button Text="Excluir" Clicked="Btn_Popup_Detalhe_Excluir"/>
-            <Button Text="Editar" Clicked="Button_Clicked"/>
+            <Button Text="Editar" Clicked="Btn_Popup_Detalhe_Editar"/>
 
 
         </StackLayout>

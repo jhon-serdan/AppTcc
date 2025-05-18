@@ -71,10 +71,7 @@ public partial class Transacoes : ContentPage
 
     private async void lst_Transacoes_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (e.CurrentSelection.FirstOrDefault() is not null)
-        {
-            await App.Current.MainPage.ShowPopupAsync(new PopupDetalheItem());
-            lst_Transacoes.SelectedItem = null;
-        }
+        var popup = new PopupDetalheItem();
+        this.ShowPopup(popup);
     }
 }

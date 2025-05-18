@@ -61,35 +61,8 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <!--Carteira-->
-                <Label Text="Saldo em Carteira"
-                       Style="{StaticResource Titulo}" />
-
-                <Border Margin="5,0,5,0"
-                        Padding="5,0,5,0">
-
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="10,10,10,10" />
-                    </Border.StrokeShape>
-
-                    <Label Text="R$ 150,00" />
-                </Border>
-
-                <!--Poupança-->
-                <Label Text="Saldo em Poupança"
-                       Style="{StaticResource Titulo}" />
-
-                <Border Margin="5,0,5,0"
-                        Padding="5,0,5,0">
-
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="10,10,10,10" />
-                    </Border.StrokeShape>
-
-                    <Label Text="R$ 150,00" />
-                </Border>
-            
-                <!--Categoria-->
+           
+                <!--Gráfico despesa por Categoria-->
                 <Label Text="Despesa por catergoria"
                        Style="{StaticResource Titulo}" />
 
@@ -126,7 +99,8 @@
                     </Border.StrokeShape>
 
                     <Label Text="inserir valores"
-                           x:Name="LblDespesasFuturas"/>
+                           x:Name="LblDespesasFuturas"
+                           Style="{StaticResource DefaultStyleLabel}"/>
                 </Border>
 
                 <Button x:Name="ExportarBanco"

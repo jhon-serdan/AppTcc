@@ -244,25 +244,25 @@ public partial class PaginaInicial : ContentPage
 
     private async void ExportarBanco_Clicked(object sender, EventArgs e)
     {
-        await ExportarBancoAsync();
-    }
-
-    public async Task ExportarBancoAsync()
-    {
         try
         {
-            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "banco_financas.db3");
+            // Caminhos dos bancos de dados
+            string appDir = "/data/user/0/com.companyname.apptcc/files/";
+            string financasDbPath = Path.Combine(appDir, "banco_financas.db3");
 
-            string exportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "banco_financas.db3");
+            // Pasta de destino (Downloads é acessível ao usuário)
+            string destinationDir = "/storage/emulated/0/Download/";
 
-            File.Copy(dbPath, exportPath, true);
+            if (File.Exists(financasDbPath))
+            {
+                File.Copy(financasDbPath, Path.Combine(destinationDir, "banco_financas_export.db3"), true);
+            }
 
-            await App.Current.MainPage.DisplayAlert("Sucesso", $"banco exportado para: {exportPath}", "OK");
-
-        } catch (Exception ex)
+            await DisplayAlert("Sucesso", "Bancos de dados exportados para a pasta Downloads", "OK");
+        }
+        catch (Exception ex)
         {
-            await App.Current.MainPage.DisplayAlert("Erro", $"Falha ao exportar: {ex.Message}", "OK");
+            await DisplayAlert("Erro", $"Falha ao exportar: {ex.Message}", "OK");
         }
     }
-
 }

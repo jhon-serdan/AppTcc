@@ -28,6 +28,7 @@
 
                             <Label Text="{Binding Data, StringFormat='{}{0:dd/MM/yyyy}'}" />
 
+                            <Label Text="{Binding Descricao}" />
 
                         </VerticalStackLayout>
 
