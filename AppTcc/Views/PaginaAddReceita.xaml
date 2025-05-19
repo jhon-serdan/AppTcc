@@ -49,7 +49,7 @@
                Style="{StaticResource TituloItens}" />
 
         <Entry x:Name="DescricaoReceita"
-               Placeholder="Infore a descrição"
+               Placeholder="Informe a descrição"
                Style="{StaticResource DefaultStyleEntryAbcd}" />
 
         <control:BtnHome x:Name="BtnHomeReceita" />

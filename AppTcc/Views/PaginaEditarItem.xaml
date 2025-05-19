@@ -11,27 +11,27 @@
     <VerticalStackLayout>
 
         <Label 
-            Text="Nova Receita"
+            Text="Editr Receita"
             Style="{StaticResource TituloPagina}"/>
 
         <Label Text="Valor Receita" 
                Style="{StaticResource TituloItens}"/>
 
-        <Entry x:Name="EntryValorReceita"
+        <Entry x:Name="EntryValorReceitaPagEdt"
                Style="{StaticResource DefaultStyleEntryNmrc}" />
 
         <Label 
             Text="Data"
             Style="{StaticResource TituloItens}"/>
 
-        <DatePicker x:Name="DtpckReceita"
+        <DatePicker x:Name="DtpckReceitaPagEdt"
                     Style="{StaticResource DefaultStyleDtpck}"/>
 
         <Label 
             Text="Categoria"
             Style="{StaticResource TituloItens}"/>
 
-        <Picker x:Name="PckCategoriaReceita"
+        <Picker x:Name="PckCategoriaReceitaPagEdt"
                 Style="{StaticResource DefaultStylePck}"
                 SelectedIndex="0">
 
@@ -44,11 +44,10 @@
         <Label Text="Descrição"
                Style="{StaticResource TituloItens}" />
 
-        <Entry x:Name="DescricaoReceita"
-               Placeholder="Infore a descrição"
+        <Entry x:Name="DescricaoReceitaPagEdt"
+               Placeholder="Informe a descrição"
                Style="{StaticResource DefaultStyleEntryAbcd}" />
 
-        <control:BtnHome x:Name="BtnHomeReceita" />
 
     </VerticalStackLayout>
 

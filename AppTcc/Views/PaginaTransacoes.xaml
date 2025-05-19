@@ -14,7 +14,8 @@
                         ItemsSource="{Binding lista}"
                         Margin="10,5,10,0"
                         SelectionMode="Single"
-                        SelectionChanged="lst_Transacoes_SelectionChanged">
+                        SelectionChanged="lst_Transacoes_SelectionChanged"
+                        SelectedItem="{Binding ItemSelecionado, Mode=TwoWay}">
 
             <CollectionView.ItemTemplate>
 

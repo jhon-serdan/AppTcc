@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Views;
 using AppTcc.Popups;
+using Android.Icu.Text;
 
 
 namespace AppTcc.Views;
@@ -10,9 +11,11 @@ namespace AppTcc.Views;
 public partial class Transacoes : ContentPage
 {
     ObservableCollection<Transacao> lista = new ObservableCollection<Transacao>();
+    private SQLiteDatabaseHelper _dataService;
+    private Transacao _transacaoSelecionada;
 
 
-	public Transacoes()
+    public Transacoes()
 	{
 		InitializeComponent();
 
@@ -71,7 +74,17 @@ public partial class Transacoes : ContentPage
 
     private async void lst_Transacoes_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var popup = new PopupDetalheItem();
-        this.ShowPopup(popup);
+        try
+        {
+            if (e.CurrentSelection.FirstOrDefault() is Transacao t)
+            {
+                await Shell.Current.GoToAsync($"{nameof(PaginaEditarItem)}?Id={t.Id}");
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ops", ex.Message, "OK");
+        }
     }
+
 }
