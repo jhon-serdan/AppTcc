@@ -20,7 +20,9 @@
             <Picker Grid.Column="1"
                     HorizontalTextAlignment="Center"
                     Margin="5,0,5,0"
-                    x:Name="PckTransacoes">
+                    x:Name="PckTransacoes"
+                    Style="{StaticResource DefaultStylePck}"
+                    SelectedIndexChanged="PckTransacoes_SelectedIndexChanged">
 
                 <Picker.Items>
                     <x:String>Geral</x:String>
@@ -33,12 +35,12 @@
 
         </Grid>
 
-        <DatePicker Grid.Column="2"
-                    IsVisible="False"
+        <DatePicker IsVisible="False"
                     Format="MM/yyyy"
                     HorizontalOptions="Center"
                     FontSize="18"
-                    x:Name="DtPckTransacao"/>
+                    x:Name="DtPckTransacao"
+                    DateSelected="DtPckTransacao_DateSelected"/>
         
 
         

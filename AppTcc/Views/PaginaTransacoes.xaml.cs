@@ -20,6 +20,8 @@ public partial class Transacoes : ContentPage
 
         lst_Transacoes.ItemsSource = lista;
 
+        PckTransacoes.SelectedIndex = 0;
+
     }
 
 
@@ -72,6 +74,25 @@ public partial class Transacoes : ContentPage
 
     #endregion
 
+    private async Task CarregarTransacoes()
+    {
+        try
+        {
+            var transacoes = await App.DB.ListarTransacaoAsync();
+
+            lista.Clear();
+            foreach (var transacao in transacoes)
+            {
+                lista.Add(transacao);
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erro", $"Erro ao carregar transações: {ex.Message}", "OK");
+        }
+    }
+
+
     private async void lst_Transacoes_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         try
@@ -94,4 +115,52 @@ public partial class Transacoes : ContentPage
         }
     }
 
+    private async Task CarregarTransacoesPorPeriodo(int mes, int ano)
+    {
+        try
+        {
+            var transacoes = await App.DB.ListarTransacaoMes(mes, ano);
+
+            lista.Clear();
+            foreach (var transacao in transacoes)
+            {
+                lista.Add(transacao);
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erro", $"Erro ao carregar transações do período: {ex.Message}", "OK");
+        }
+    }
+
+
+    private void PckTransacoes_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private async void DtPckTransacao_DateSelected(object sender, DateChangedEventArgs e)
+    {
+        var picker = sender as Picker;
+
+        if (picker.SelectedIndex == 0) // Geral
+        {
+            DtPckTransacao.IsVisible = false;
+            await CarregarTransacoes();
+        }
+        else if (picker.SelectedIndex == 1) // Período
+        {
+            DtPckTransacao.IsVisible = true;
+
+            // Define a data atual no DatePicker se ainda não foi definida
+            if (DtPckTransacao.Date == default(DateTime))
+            {
+                DtPckTransacao.Date = DateTime.Now;
+            }
+
+            // Carrega as transações do mês/ano atual
+            await CarregarTransacoesPorPeriodo(DtPckTransacao.Date.Month, DtPckTransacao.Date.Year);
+        }
+
+    }
 }
