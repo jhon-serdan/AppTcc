@@ -1,90 +1,78 @@
 using AppTcc.Helper;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using CommunityToolkit.Maui.Views;
 using AppTcc.Popups;
-
+using CommunityToolkit.Maui.Views;
+using System.Collections.ObjectModel;
 
 namespace AppTcc.Views;
 
 public partial class Transacoes : ContentPage
 {
-    ObservableCollection<Transacao> lista = new ObservableCollection<Transacao>();
-    private SQLiteDatabaseHelper _dataService;
-    private Transacao _transacaoSelecionada;
-
+    public ObservableCollection<Transacao> lista { get; set; } = new ObservableCollection<Transacao>();
+    public Transacao ItemSelecionado { get; set; }
 
     public Transacoes()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
-        lst_Transacoes.ItemsSource = lista;
+        BindingContext = this;
 
+        // Define "Geral" como opção padrão
         PckTransacoes.SelectedIndex = 0;
 
+        // Carrega todas as transações inicialmente
+        _ = CarregarTransacoes();
     }
 
-
-    #region Limpar toda tabela de Transações
-    private async Task LimparTodasTransacoes()
+    protected override async void OnAppearing()
     {
-		bool answer = await DisplayAlert("Atenção", "Deseja zerar todas as transações. Essa ação não pode ser desfeita", "Sim", "Não");
+        base.OnAppearing();
 
-		if (answer)
-		{
-			try
-			{
-				await App.DB.LimparTabelaTransacoes();
-
-				await DisplayAlert ("Sucesso", "Todas as transações foram excluídas", "OK");
-            }
-            catch (Exception ex)
-			{
-                await DisplayAlert("Erro", $"Ocorreu um erro: {ex.Message}", "OK");
-            }
-
-        }
-
-    }
-
-    private async void Btn_LimparTransacao(object sender, EventArgs e)
-    {
-		await LimparTodasTransacoes();
-    }
-    #endregion
-
-    #region Limpa a lista de transação para evitar valor repetido
-
-    protected async override void OnAppearing()
-    {
-        try
+        // Verifica qual modo está selecionado e carrega os dados apropriados
+        if (PckTransacoes.SelectedIndex == 0) // Geral
         {
-            lista.Clear();
-
-            List<Transacao> tmp = await App.DB.ListarTransacaoAsync();
-
-            tmp.ForEach(i => lista.Add(i));
-
+            await CarregarTransacoes();
         }
-        catch (Exception ex)
+        else if (PckTransacoes.SelectedIndex == 1) // Período
         {
-            await DisplayAlert("Ops", ex.Message, "oK");
+            // Garante que o grid está visível
+            GridPeriodo.IsVisible = true;
+
+            // Se não tem data definida, usa a atual
+            if (DtPckTransacao.Date == default(DateTime) || DtPckTransacao.Date.Year < 2000)
+            {
+                DtPckTransacao.Date = DateTime.Now;
+            }
+
+            // Carrega as transações do período selecionado
+            var data = DtPckTransacao.Date;
+            await CarregarTransacoesPorPeriodo(data.Month, data.Year);
         }
     }
-
-    #endregion
 
     private async Task CarregarTransacoes()
     {
         try
         {
+            if (App.DB == null)
+            {
+                await DisplayAlert("Erro", "Banco de dados não inicializado", "OK");
+                return;
+            }
+
             var transacoes = await App.DB.ListarTransacaoAsync();
 
-            lista.Clear();
-            foreach (var transacao in transacoes)
+            // Usa Dispatcher para operações na UI
+            await MainThread.InvokeOnMainThreadAsync(() =>
             {
-                lista.Add(transacao);
-            }
+                lista.Clear();
+                if (transacoes != null)
+                {
+                    foreach (var transacao in transacoes)
+                    {
+                        lista.Add(transacao);
+                    }
+                }
+            });
         }
         catch (Exception ex)
         {
@@ -92,75 +80,150 @@ public partial class Transacoes : ContentPage
         }
     }
 
+    private async Task CarregarTransacoesPorPeriodo(int mes, int ano)
+    {
+        try
+        {
+            if (App.DB == null)
+            {
+                await DisplayAlert("Erro", "Banco de dados não inicializado", "OK");
+                return;
+            }
+
+            var transacoes = await App.DB.ListarTransacaoMes(mes, ano);
+
+            // Usa MainThread para operações na UI
+            await MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                lista.Clear();
+                if (transacoes != null)
+                {
+                    foreach (var transacao in transacoes)
+                    {
+                        lista.Add(transacao);
+                    }
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erro", $"Erro ao carregar transações do período: {ex.Message}\nMês: {mes}, Ano: {ano}", "OK");
+        }
+    }
+
+    private async void PckTransacoes_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            var picker = sender as Picker;
+
+            if (picker == null) return;
+
+            if (picker.SelectedIndex == 0) // Geral
+            {
+                GridPeriodo.IsVisible = false;
+                await CarregarTransacoes();
+            }
+            else if (picker.SelectedIndex == 1) // Período
+            {
+                GridPeriodo.IsVisible = true;
+
+                // Define a data atual no DatePicker se ainda não foi definida
+                if (DtPckTransacao.Date == default(DateTime) || DtPckTransacao.Date.Year < 2000)
+                {
+                    DtPckTransacao.Date = DateTime.Now;
+                }
+
+                // Carrega as transações do mês/ano atual
+                var data = DtPckTransacao.Date;
+                await CarregarTransacoesPorPeriodo(data.Month, data.Year);
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erro", $"Erro ao alterar filtro: {ex.Message}", "OK");
+        }
+    }
+
+    private async void DtPckTransacao_DateSelected(object sender, DateChangedEventArgs e)
+    {
+        try
+        {
+            if (PckTransacoes.SelectedIndex == 1 && e?.NewDate != null) // Só executa se estiver no modo "Período"
+            {
+                var data = e.NewDate;
+
+                // Validação da data
+                if (data.Year >= 1900 && data.Year <= 2100)
+                {
+                    await CarregarTransacoesPorPeriodo(data.Month, data.Year);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erro", $"Erro ao filtrar por data: {ex.Message}", "OK");
+        }
+    }
 
     private async void lst_Transacoes_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         try
         {
-            if (e.CurrentSelection.FirstOrDefault() is Transacao transacao)
+            if (e?.CurrentSelection?.FirstOrDefault() is Transacao transacaoSelecionada)
             {
-                var parametros = new Dictionary<string, object>
+                ItemSelecionado = transacaoSelecionada;
+
+                var popup = new PopupDetalheItem();
+                await this.ShowPopupAsync(popup);
+
+                // Limpa a seleção
+                if (sender is CollectionView collectionView)
                 {
-                    {"TransacaoSelecionada", transacao}
-                };
-
-                await Shell.Current.GoToAsync(nameof(PaginaEditarItem), parametros);
+                    collectionView.SelectedItem = null;
+                }
             }
-
-            ((CollectionView)sender).SelectedItem = null;
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Ops", ex.Message, "OK");
+            await DisplayAlert("Erro", $"Erro ao selecionar transação: {ex.Message}", "OK");
         }
     }
 
-    private async Task CarregarTransacoesPorPeriodo(int mes, int ano)
+    private async void Btn_LimparTransacao(object sender, EventArgs e)
     {
         try
         {
-            var transacoes = await App.DB.ListarTransacaoMes(mes, ano);
+            bool resposta = await DisplayAlert("Confirmação",
+                "Tem certeza que deseja apagar todas as transações? Esta ação não pode ser desfeita.",
+                "Sim", "Não");
 
-            lista.Clear();
-            foreach (var transacao in transacoes)
+            if (resposta)
             {
-                lista.Add(transacao);
+                if (App.DB == null)
+                {
+                    await DisplayAlert("Erro", "Banco de dados não inicializado", "OK");
+                    return;
+                }
+
+                await App.DB.LimparTabelaTransacoes();
+                await DisplayAlert("Sucesso", "Todas as transações foram removidas.", "OK");
+
+                // Recarrega a lista baseado no filtro atual
+                if (PckTransacoes.SelectedIndex == 0)
+                {
+                    await CarregarTransacoes();
+                }
+                else if (PckTransacoes.SelectedIndex == 1)
+                {
+                    var data = DtPckTransacao.Date;
+                    await CarregarTransacoesPorPeriodo(data.Month, data.Year);
+                }
             }
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Erro", $"Erro ao carregar transações do período: {ex.Message}", "OK");
+            await DisplayAlert("Erro", $"Erro ao limpar transações: {ex.Message}", "OK");
         }
-    }
-
-
-    private void PckTransacoes_SelectedIndexChanged(object sender, EventArgs e)
-    {
-
-    }
-
-    private async void DtPckTransacao_DateSelected(object sender, DateChangedEventArgs e)
-    {
-        var picker = sender as Picker;
-
-        if (picker.SelectedIndex == 0) // Geral
-        {
-            DtPckTransacao.IsVisible = false;
-            await CarregarTransacoes();
-        }
-        else if (picker.SelectedIndex == 1) // Período
-        {
-            DtPckTransacao.IsVisible = true;
-
-            // Define a data atual no DatePicker se ainda não foi definida
-            if (DtPckTransacao.Date == default(DateTime))
-            {
-                DtPckTransacao.Date = DateTime.Now;
-            }
-
-            // Carrega as transações do mês/ano atual
-            await CarregarTransacoesPorPeriodo(DtPckTransacao.Date.Month, DtPckTransacao.Date.Year);
-        }
-
     }
 }
