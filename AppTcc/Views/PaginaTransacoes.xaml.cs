@@ -20,6 +20,7 @@ namespace AppTcc.Views
             PckTransacoes.SelectedIndex = 0;
         }
 
+        #region Método para carregar todas as transações
         private async void CarregarTransacoes()
         {
             try
@@ -33,6 +34,9 @@ namespace AppTcc.Views
             }
         }
 
+        #endregion
+
+        #region Método para carregar transações por período
         private async void CarregarTransacoesPorPeriodo(DateTime dataEscolhida)
         {
             try
@@ -49,6 +53,9 @@ namespace AppTcc.Views
             }
         }
 
+        #endregion
+
+        #region Método para aparecer msg de sem transações
         private void AtualizarLista(List<Transacao> transacoes)
         {
             lista.Clear();
@@ -72,6 +79,9 @@ namespace AppTcc.Views
             }
         }
 
+        #endregion
+
+        #region Método para carregar transações por tipo de visualização
         private void PckTransacoes_SelectedIndexChanged(object sender, EventArgs e)
         {
             var picker = sender as Picker;
@@ -88,12 +98,17 @@ namespace AppTcc.Views
                 CarregarTransacoesPorPeriodo(DateTime.Now);
             }
         }
+        #endregion
 
+        #region Carregar transações por período
         private void DtPckTransacao_DateSelected(object sender, DateChangedEventArgs e)
         {
             // Quando uma nova data é selecionada, carrega as transações desse período
             CarregarTransacoesPorPeriodo(e.NewDate);
         }
+
+        #endregion
+
 
         private async void lst_Transacoes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -107,6 +122,7 @@ namespace AppTcc.Views
             }
         }
 
+        #region Botão para zerar o banco de dados
         private async void Btn_LimparTransacao(object sender, EventArgs e)
         {
             try
@@ -133,6 +149,9 @@ namespace AppTcc.Views
             }
         }
 
+        #endregion
+
+        #region Método para atualizar a lista de transações
         protected async override void OnAppearing()
         {
             try
@@ -149,5 +168,7 @@ namespace AppTcc.Views
                 await DisplayAlert("Ops", ex.Message, "oK");
             }
         }
+
+        #endregion
     }
 }

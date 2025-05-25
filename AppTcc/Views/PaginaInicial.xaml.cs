@@ -40,6 +40,7 @@ public partial class PaginaInicial : ContentPage
 
     }
 
+    #region Método para carregar as transações do mês selecionado
     private async Task CarregarDadosMes(int mes, int ano)
     {
         try
@@ -96,6 +97,9 @@ public partial class PaginaInicial : ContentPage
         }
     }
 
+    #endregion
+
+    #region Método para carregar o gráfico de despesas por categoria
     private void CarregarDadosGrafico(Dictionary<string, decimal> despesasPorCategoria)
     {
 
@@ -148,10 +152,10 @@ public partial class PaginaInicial : ContentPage
             // Limpa o gráfico atual
             DespesaGrafico.Chart = null;
 
-            // Força o "refresh" com atraso e reinicialização do gráfico
+            // Força a atualização com atraso e reinicialização do gráfico
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                await Task.Delay(50); // pequeno atraso para garantir que o gráfico anterior seja removido
+                await Task.Delay(50);
 
                 DespesaGrafico.Chart = new DonutChart
                 {
@@ -163,7 +167,7 @@ public partial class PaginaInicial : ContentPage
                     GraphPosition = GraphPosition.AutoFill
                 };
 
-                DespesaGrafico.InvalidateMeasure(); // atualiza visualmente
+                DespesaGrafico.InvalidateMeasure(); 
             });
 
         } catch (Exception ex)
@@ -172,6 +176,9 @@ public partial class PaginaInicial : ContentPage
         }
     }
 
+    #endregion
+
+    #region Método para carregar despesas futuras
     private async Task carregarDespesasFuturas(int mes, int ano)
     {
         try
@@ -191,6 +198,9 @@ public partial class PaginaInicial : ContentPage
         }
     }
 
+    #endregion
+
+    #region Método para calcular o saldo acumulado
     private async Task<decimal> CalcularSaldoAcumuladoMesAnterior (int mesSelecionado, int anoSelecionado)
     {
         decimal saldoAcumulado = 0;
@@ -220,6 +230,9 @@ public partial class PaginaInicial : ContentPage
         return saldoAcumulado;
     }
 
+    #endregion
+
+    #region Método para colocar a moeda com o símbolo correto
     private void AtualizarInterface()
     {
         try
@@ -236,12 +249,18 @@ public partial class PaginaInicial : ContentPage
         }
     }
 
+    #endregion
+
+    #region Método para abrir o popup de adicionar transação
     private void FloatingActionButton_Clicked(object sender, EventArgs e)
     {
         var popup = new PopupAdd();
         this.ShowPopup(popup);
     }
 
+    #endregion
+
+    #region Método para exportar o banco de dados
     private async void ExportarBanco_Clicked(object sender, EventArgs e)
     {
         try
@@ -265,4 +284,6 @@ public partial class PaginaInicial : ContentPage
             await DisplayAlert("Erro", $"Falha ao exportar: {ex.Message}", "OK");
         }
     }
+
+    #endregion
 }

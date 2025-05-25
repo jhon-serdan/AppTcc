@@ -22,17 +22,5 @@ namespace AppTcc.Popups
             await Shell.Current.GoToAsync(nameof(PaginaAddDespesa));
             Close();
         }
-
-        private async void Btn_AddTransferencia_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync(nameof(PaginaAddTransferencia));
-            Close();
-        }
-
-        private async void Btn_AddPoupanca_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync(nameof(PaginaAddPoupança));
-            Close();
-        }
     }
 }

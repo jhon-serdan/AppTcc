@@ -44,6 +44,17 @@ public partial class PaginaEditarItem : ContentPage, INotifyPropertyChanged
         }
     }
 
+    public PaginaEditarItem()
+    {
+        InitializeComponent();
+        BindingContext = this;
+
+
+        BtnHomeEditarItem.CancelarClicked += BtnCancelar_Clicked;
+        BtnHomeEditarItem.AvancarClicked += BtnSalvar_Clicked;
+    }
+
+    #region Propriedades para controle das transações parceladas
     // Propriedades para controle de parcelas
     private bool _eTransacaoParcelada;
     public bool ETransacaoParcelada
@@ -67,17 +78,9 @@ public partial class PaginaEditarItem : ContentPage, INotifyPropertyChanged
         }
     }
 
-    public PaginaEditarItem()
-    {
-        InitializeComponent();
-        BindingContext = this;
+    #endregion
 
-        // Conectar os eventos do controle personalizado
-
-        BtnHomeEditarItem.CancelarClicked += BtnCancelar_Clicked;
-        BtnHomeEditarItem.AvancarClicked += BtnSalvar_Clicked;
-    }
-
+    #region Método para verificar se a transação é parcelada
     private void VerificarSeEParcelado()
     {
         if (TransacaoSelecionada != null && TransacaoSelecionada.EParcelado)
@@ -91,6 +94,10 @@ public partial class PaginaEditarItem : ContentPage, INotifyPropertyChanged
             InformacaoParcela = "";
         }
     }
+
+    #endregion
+
+    #region Método para carregar categorias do picker
 
     private async void CarregarCategorias()
     {
@@ -118,6 +125,10 @@ public partial class PaginaEditarItem : ContentPage, INotifyPropertyChanged
         }
     }
 
+    #endregion
+
+    #region Métodos de Atualizar
+    #region Método Salvar Transação
     private async void BtnSalvar_Clicked(object sender, EventArgs e)
     {
         try
@@ -163,6 +174,9 @@ public partial class PaginaEditarItem : ContentPage, INotifyPropertyChanged
         }
     }
 
+    #endregion
+
+    #region Método Atualizar Todas as Parcelas da Transação
     private async Task AtualizarTodasAsParcelas()
     {
         try
@@ -216,6 +230,13 @@ public partial class PaginaEditarItem : ContentPage, INotifyPropertyChanged
         }
     }
 
+    #endregion
+
+    #endregion
+
+    #region Métodos de excluir transação
+
+    #region Método excluir transação
     private async void BtnExcluir_Clicked(object sender, EventArgs e)
     {
         try
@@ -263,6 +284,10 @@ public partial class PaginaEditarItem : ContentPage, INotifyPropertyChanged
             await DisplayAlert("Erro", $"Erro ao excluir: {ex.Message}", "OK");
         }
     }
+
+    #endregion
+
+    #region Método Excluir Todas as Parcelas
 
     private async Task ExcluirTodasAsParcelas()
     {
@@ -315,14 +340,25 @@ public partial class PaginaEditarItem : ContentPage, INotifyPropertyChanged
         }
     }
 
+    #endregion
+
+    #endregion
+
+    #region Método para cancelar a edição e voltar a página anterior
     private async void BtnCancelar_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("..");
     }
+
+    #endregion
+
+    #region Métodos para atualiar as binding
 
     public event PropertyChangedEventHandler PropertyChanged;
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
+    #endregion
 }

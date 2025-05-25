@@ -69,9 +69,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Popups\PopupDetalheItem.xaml.cs">
-	    <DependentUpon>PopupDetalheItem.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Views\PaginaTransacoes.xaml.cs">
 	    <DependentUpon>PaginaTransacoes.xaml</DependentUpon>
 	  </Compile>
@@ -79,9 +76,6 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="CustomControll\BtnHome.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Popups\PopupDetalheItem.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Popups\PopupAdd.xaml">
@@ -93,13 +87,7 @@
 	  <MauiXaml Update="Views\PaginaAddDespesa.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\PaginaAddPoupança.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Views\PaginaAddReceita.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\PaginaAddTransferencia.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\PaginaEditarItem.xaml">
