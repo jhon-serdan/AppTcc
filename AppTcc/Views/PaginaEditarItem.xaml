@@ -12,7 +12,7 @@
     <VerticalStackLayout>
 
 
-        <Grid ColumnDefinitions="*, *">
+        <Grid ColumnDefinitions="Auto, *">
 
               <Label Grid.Column="0"
                      Text="{Binding TransacaoSelecionada.Tipo, StringFormat='Editar {0}'}"
@@ -23,19 +23,12 @@
                       Style="{StaticResource TituloPagina}"
                       FontSize="12"
                       Clicked="BtnExcluir_Clicked"
-                      TextColor="Black"
+                      TextColor="PaleVioletRed"
                       BackgroundColor="AliceBlue"
                       HorizontalOptions="End"
-                      Padding="0,0,0,0"/>
+                      Padding="0,0,5,0"/>
 
         </Grid>
-
-
-
-
-
-
-
 
         <!-- Informação sobre parcela (se aplicável) -->
         <Label Text="{Binding InformacaoParcela}"
@@ -84,18 +77,8 @@
                Placeholder="Informe a descrição"
                Style="{StaticResource DefaultStyleEntryAbcd}" />
 
-        <!-- Botões -->
-        <Grid ColumnDefinitions="*,*" Margin="10">
-            <Button Grid.Column="0" 
-                    Text="Cancelar" 
-                    BackgroundColor="Gray"
-                    Clicked="BtnCancelar_Clicked"/>
-            <Button Grid.Column="1" 
-                    Text="Salvar" 
-                    BackgroundColor="Green"
-                    Clicked="BtnSalvar_Clicked"/>
-        </Grid>
-
+        <control:BtnHome x:Name="BtnHomeEditarItem" />
+        
     </VerticalStackLayout>
 
 </ContentPage>

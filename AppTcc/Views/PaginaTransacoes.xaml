@@ -10,6 +10,40 @@
              
     <VerticalStackLayout>
 
+        <Grid ColumnDefinitions="Auto,*">
+
+            <Label Grid.Column="0"
+                   Text="Modo exibição:"
+                   Style="{StaticResource Padrao}"
+                   Margin="5,2.5,0,0"/>
+
+            <Picker Grid.Column="1"
+                    HorizontalTextAlignment="Center"
+                    Margin="5,0,5,0"
+                    x:Name="PckTransacoes">
+
+                <Picker.Items>
+                    <x:String>Geral</x:String>
+                    <x:String>Período</x:String>
+                    
+    
+                </Picker.Items>
+
+            </Picker>
+
+        </Grid>
+
+        <DatePicker Grid.Column="2"
+                    IsVisible="False"
+                    Format="MM/yyyy"
+                    HorizontalOptions="Center"
+                    FontSize="18"
+                    x:Name="DtPckTransacao"/>
+        
+
+        
+        
+
         <CollectionView x:Name="lst_Transacoes"
                         ItemsSource="{Binding lista}"
                         Margin="10,5,10,0"
@@ -21,23 +55,36 @@
 
                 <DataTemplate>
 
-                    <Grid ColumnDefinitions="*,auto"
-                          Padding="0,4,0,4">
+                    <VerticalStackLayout>
+                                                
+                        <Grid ColumnDefinitions="*,auto"
+                              Padding="0,4,0,4">
 
-                        <VerticalStackLayout Grid.Column="0">
-                            <Label Text="{Binding CategoriaNome}" />
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label Text="{Binding CategoriaNome}"
+                                       Style="{StaticResource Padrao}"/>
+                                <Label Text="{Binding Data, StringFormat='{}{0:dd/MM/yyyy}'}"
+                                       Style="{StaticResource Padrao}"/>
+                                <Label Text="{Binding Descricao}"
+                                       Style="{StaticResource Padrao}"/>
 
-                            <Label Text="{Binding Data, StringFormat='{}{0:dd/MM/yyyy}'}" />
+                            </VerticalStackLayout>
 
-                            <Label Text="{Binding Descricao}" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding Valor, StringFormat='{0:C}'}"
+                                   VerticalOptions="Center"
+                                   TextColor="{Binding CorValor}"
+                                   FontAttributes="Bold"
+                                   Style="{StaticResource Padrao}"/>
 
-                        </VerticalStackLayout>
+                        </Grid>
 
-                        <Label Grid.Column="1"
-                               Text="{Binding Valor, StringFormat='{0:C}'}"
-                               VerticalOptions="Center"/>
+                        <BoxView Color="LightGray"
+                                 HeightRequest="1"
+                                 Margin="10,0,10,0" />
 
-                    </Grid>
+                    </VerticalStackLayout>
+                    
                 </DataTemplate>
                 
             </CollectionView.ItemTemplate>

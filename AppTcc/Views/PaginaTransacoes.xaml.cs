@@ -62,6 +62,7 @@ public partial class Transacoes : ContentPage
             List<Transacao> tmp = await App.DB.ListarTransacaoAsync();
 
             tmp.ForEach(i => lista.Add(i));
+
         }
         catch (Exception ex)
         {

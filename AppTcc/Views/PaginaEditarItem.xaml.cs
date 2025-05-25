@@ -71,6 +71,11 @@ public partial class PaginaEditarItem : ContentPage, INotifyPropertyChanged
     {
         InitializeComponent();
         BindingContext = this;
+
+        // Conectar os eventos do controle personalizado
+
+        BtnHomeEditarItem.CancelarClicked += BtnCancelar_Clicked;
+        BtnHomeEditarItem.AvancarClicked += BtnSalvar_Clicked;
     }
 
     private void VerificarSeEParcelado()

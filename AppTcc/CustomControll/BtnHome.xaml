@@ -10,7 +10,7 @@
                 Margin="5,5,2.5,5"
                 Clicked="Btn_Cancelar"/>
         
-        <Button Text="Avançar"
+        <Button Text="Salvar"
                 Grid.Column="1"
                 Margin="2.5,5,5,5"
                 Clicked="Btn_Avancar"/>

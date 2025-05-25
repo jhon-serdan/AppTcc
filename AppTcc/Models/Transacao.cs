@@ -23,5 +23,14 @@ namespace AppTcc.Helper
         public int? ParcelaAtual { get; set; }
         public int? TransacaoOrigemId { get; set; }
         public string Conta { get; set; } = string.Empty;
+
+        [Ignore]
+        public Color CorValor
+        {
+            get
+            {
+                return Tipo == TipoTransacao.Receita ? Colors.Green : Colors.Red;
+            }
+        }
     }
 }
