@@ -53,12 +53,19 @@
                         DateSelected="DtPckTransacao_DateSelected"/>
         </Grid>
 
+        <Label x:Name="LblSemTransacoes" 
+               Text="Sem transações"
+               Style="{StaticResource DefaultStyleLabel}"
+               HorizontalOptions="Center"
+               IsVisible="False"/>
+
         <CollectionView x:Name="lst_Transacoes"
                         ItemsSource="{Binding lista}"
                         Margin="10,5,10,0"
                         SelectionMode="Single"
                         SelectionChanged="lst_Transacoes_SelectionChanged"
-                        SelectedItem="{Binding ItemSelecionado, Mode=TwoWay}">
+                        SelectedItem="{Binding ItemSelecionado, Mode=TwoWay}"
+                        IsVisible="True">
 
             <CollectionView.ItemTemplate>
 
