@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Views;
 using AppTcc.Popups;
-using Android.Icu.Text;
 
 
 namespace AppTcc.Views;
@@ -76,10 +75,17 @@ public partial class Transacoes : ContentPage
     {
         try
         {
-            if (e.CurrentSelection.FirstOrDefault() is Transacao t)
+            if (e.CurrentSelection.FirstOrDefault() is Transacao transacao)
             {
-                await Shell.Current.GoToAsync($"{nameof(PaginaEditarItem)}?Id={t.Id}");
+                var parametros = new Dictionary<string, object>
+                {
+                    {"TransacaoSelecionada", transacao}
+                };
+
+                await Shell.Current.GoToAsync(nameof(PaginaEditarItem), parametros);
             }
+
+            ((CollectionView)sender).SelectedItem = null;
         }
         catch (Exception ex)
         {

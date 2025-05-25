@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:control="clr-namespace:AppTcc.CustomControll"
              x:Class="AppTcc.Views.PaginaEditarItem"
              Title="PaginaEditarItem"
              NavigationPage.HasBackButton="False"
@@ -10,46 +11,91 @@
 
     <VerticalStackLayout>
 
-        <Label 
-            Text="Editr Receita"
-            Style="{StaticResource TituloPagina}"/>
 
-        <Label Text="Valor Receita" 
+        <Grid ColumnDefinitions="*, *">
+
+              <Label Grid.Column="0"
+                     Text="{Binding TransacaoSelecionada.Tipo, StringFormat='Editar {0}'}"
+                     Style="{StaticResource TituloPagina}"/>
+
+              <Button Grid.Column="1"
+                      Text="🗑️ Excluir Transação"
+                      Style="{StaticResource TituloPagina}"
+                      FontSize="12"
+                      Clicked="BtnExcluir_Clicked"
+                      TextColor="Black"
+                      BackgroundColor="AliceBlue"
+                      HorizontalOptions="End"
+                      Padding="0,0,0,0"/>
+
+        </Grid>
+
+
+
+
+
+
+
+
+        <!-- Informação sobre parcela (se aplicável) -->
+        <Label Text="{Binding InformacaoParcela}"
+               IsVisible="{Binding ETransacaoParcelada}"
+               Style="{StaticResource TituloItens}"
+               TextColor="Orange"
+               HorizontalOptions="Center"
+               FontAttributes="Bold"/>
+
+        <!-- Aviso sobre parcelas -->
+        <Frame IsVisible="{Binding ETransacaoParcelada}"
+               BackgroundColor="LightYellow"
+               BorderColor="Orange"
+               Margin="10,5">
+            <Label Text="⚠️ Esta é uma transação parcelada. Ao salvar, você poderá escolher se deseja atualizar todas as parcelas ou apenas esta."
+                   TextColor="DarkOrange"
+                   FontSize="12"
+                   HorizontalTextAlignment="Center"/>
+        </Frame>
+
+        <Label Text="{Binding TransacaoSelecionada.Tipo, StringFormat='Valor {0}'}" 
                Style="{StaticResource TituloItens}"/>
 
-        <Entry x:Name="EntryValorReceitaPagEdt"
+        <Entry Text="{Binding TransacaoSelecionada.Valor}"
                Style="{StaticResource DefaultStyleEntryNmrc}" />
 
         <Label 
             Text="Data"
             Style="{StaticResource TituloItens}"/>
 
-        <DatePicker x:Name="DtpckReceitaPagEdt"
+        <DatePicker Date="{Binding TransacaoSelecionada.Data}"
                     Style="{StaticResource DefaultStyleDtpck}"/>
 
         <Label 
             Text="Categoria"
             Style="{StaticResource TituloItens}"/>
 
-        <Picker x:Name="PckCategoriaReceitaPagEdt"
-                Style="{StaticResource DefaultStylePck}"
-                SelectedIndex="0">
-
-            <Picker.Items>
-                <x:String>-- Selecione --</x:String>
-            </Picker.Items>
-
-        </Picker>
+        <Picker ItemsSource="{Binding CategoriasNomes}"
+                SelectedItem="{Binding CategoriaSelecionada}"
+                Style="{StaticResource DefaultStylePck}"/>
 
         <Label Text="Descrição"
                Style="{StaticResource TituloItens}" />
 
-        <Entry x:Name="DescricaoReceitaPagEdt"
+        <Entry Text="{Binding TransacaoSelecionada.Descricao}"
                Placeholder="Informe a descrição"
                Style="{StaticResource DefaultStyleEntryAbcd}" />
 
+        <!-- Botões -->
+        <Grid ColumnDefinitions="*,*" Margin="10">
+            <Button Grid.Column="0" 
+                    Text="Cancelar" 
+                    BackgroundColor="Gray"
+                    Clicked="BtnCancelar_Clicked"/>
+            <Button Grid.Column="1" 
+                    Text="Salvar" 
+                    BackgroundColor="Green"
+                    Clicked="BtnSalvar_Clicked"/>
+        </Grid>
 
     </VerticalStackLayout>
-
 
 </ContentPage>
