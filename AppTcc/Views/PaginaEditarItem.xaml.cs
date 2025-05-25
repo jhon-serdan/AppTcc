@@ -183,7 +183,6 @@ public partial class PaginaEditarItem : ContentPage, INotifyPropertyChanged
         {
             // Buscar todas as transações relacionadas
             var todasTransacoes = await App.DB.ListarTransacaoAsync();
-
             List<Transacao> parcelasRelacionadas;
 
             // Se é a primeira parcela (TransacaoOrigemId é null)
@@ -205,13 +204,14 @@ public partial class PaginaEditarItem : ContentPage, INotifyPropertyChanged
                     .ToList();
             }
 
-            // Calcular novo valor por parcela
-            decimal novoValorParcela = Math.Round(TransacaoSelecionada.Valor, 2);
+
+            int numeroParcelas = TransacaoSelecionada.NumeroParcelas ?? parcelasRelacionadas.Count;
+            decimal valorTotal = TransacaoSelecionada.Valor;
+            decimal novoValorParcela = Math.Round(valorTotal / numeroParcelas, 2);
 
             // Atualizar todas as parcelas
             foreach (var parcela in parcelasRelacionadas)
             {
-                // Manter a data original de cada parcela, mas atualizar outros campos
                 parcela.Valor = novoValorParcela;
                 parcela.CategoriaId = TransacaoSelecionada.CategoriaId;
                 parcela.Descricao = TransacaoSelecionada.Descricao;
@@ -221,7 +221,9 @@ public partial class PaginaEditarItem : ContentPage, INotifyPropertyChanged
             }
 
             await DisplayAlert("Sucesso",
-                $"Todas as {parcelasRelacionadas.Count} parcelas foram atualizadas!",
+                $"Todas as {parcelasRelacionadas.Count} parcelas foram atualizadas!\n" +
+                $"Valor total: {valorTotal:C}\n" +
+                $"Valor por parcela: {novoValorParcela:C}",
                 "OK");
         }
         catch (Exception ex)
