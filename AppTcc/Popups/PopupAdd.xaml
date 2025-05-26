@@ -15,8 +15,6 @@
 
             <Button Text="Receita" Clicked="Btn_AddReceita_Clicked" />
             <Button Text="Despesa" Clicked="Btn_AddDespesa_Clicked" />
-            <!-- <Button Text="Transferência" Clicked="Btn_AddTransferencia_Clicked" /> -->
-            <!-- <Button Text="Poupança" Clicked="Btn_AddPoupanca_Clicked" IsEnabled="False"/> -->
 
         </StackLayout>
     </StackLayout>

@@ -222,13 +222,12 @@ namespace AppTcc.Helper
 
         public async Task LimparTabelaTransacoes()
         {
-            var db = App.DB;
 
-            var transacoes = await db.ListarTransacaoAsync();
+            var transacoes = await ListarTransacaoAsync();
 
             foreach (var transacao in transacoes)
             {
-                await db.DeletarTransacao(transacao);
+                await DeletarTransacao(transacao);
             }
         }
 

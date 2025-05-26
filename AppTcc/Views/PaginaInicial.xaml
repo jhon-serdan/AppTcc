@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
-    
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
@@ -61,7 +59,7 @@
                     </VerticalStackLayout>
                 </Border>
 
-           
+
                 <!--Gráfico despesa por Categoria-->
                 <Label Text="Despesa por catergoria"
                        Style="{StaticResource Titulo}" />
@@ -86,7 +84,7 @@
 
                     </VerticalStackLayout>
                 </Border>
-            
+
                 <!--Despesas Futuras-->
                 <Label Text="Despesas Futuras"
                        Style="{StaticResource Titulo}" />
@@ -105,15 +103,12 @@
 
                 <Button x:Name="ExportarBanco"
                 Text="Exportar banco"
-                Clicked="ExportarBanco_Clicked"/>
+                Clicked="ExportarBanco_Clicked"
+                IsVisible="False"/>
 
             </VerticalStackLayout>
-            
-            
+
         </ScrollView>
-
-
-
 
         <Button 
             Text="+"
@@ -126,7 +121,7 @@
             HorizontalOptions="Center"
             VerticalOptions="End"
             Margin="0,0,0,10"
-            Clicked="FloatingActionButton_Clicked"/>
+            Clicked="FloatingActionButton_Clicked" />
 
     </Grid>
 </ContentPage>
